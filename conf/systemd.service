@@ -1,5 +1,5 @@
 [Unit]
-Description=Small description of the service
+Description=Dentrite Matrix homeserver
 After=network.target
 
 [Service]
@@ -7,7 +7,8 @@ Type=simple
 User=__APP__
 Group=__APP__
 WorkingDirectory=__FINALPATH__/
-ExecStart=__FINALPATH__/script >> /var/log/__APP__/__APP__.log 2>&1
+Environment="PATH=__ENV_PATH__"
+ExecStart=__FINALPATH__/./bin/dendrite-monolith-server --tls-cert=server.crt --tls-key=server.key --config=dentrite.yaml >> /var/log/__APP__/__APP__.log 2>&1
 
 [Install]
 WantedBy=multi-user.target
