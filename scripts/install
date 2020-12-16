@@ -123,6 +123,7 @@ ynh_script_progression --message="Configuring system user..." --time --weight=1
 
 # Create a system user
 ynh_system_user_create --username=$app
+adduser $app ssl-cert
 
 #=================================================
 # SPECIFIC SETUP
@@ -150,7 +151,7 @@ ynh_add_config --template="../conf/dendrite.yaml" --destination="$final_path/den
 ynh_script_progression --message="Configuring a systemd service..." --time --weight=1
 
 # Create a dedicated systemd config
-ynh_add_systemd_config --others_var="port tls_port"
+ynh_add_systemd_config --others_var="port tls_port domain"
 
 #=================================================
 # STORE THE CONFIG FILE CHECKSUM
