@@ -31,6 +31,8 @@ app=$YNH_APP_INSTANCE_NAME
 domain=$(ynh_app_setting_get --app=$app --key=domain)
 path_url=$(ynh_app_setting_get --app=$app --key=path)
 final_path=$(ynh_app_setting_get --app=$app --key=final_path)
+port=$(ynh_app_setting_get --app=$app --key=port)
+tls_port=$(ynh_app_setting_get --app=$app --key=tls_port)
 db_name=$(ynh_app_setting_get --app=$app --key=db_name)
 db_user=$db_name
 db_pwd=$(ynh_app_setting_get --app=$app --key=db_pwd)
@@ -119,7 +121,7 @@ systemctl enable $app.service --quiet
 #=================================================
 ynh_script_progression --message="Integrating service in YunoHost..." --time --weight=1
 
-yunohost service add $app --description="Dendrite Matrix homeserver" --log="/var/log/$app/$app.log"# --needs_exposed_ports "$tls_port"
+yunohost service add $app --description="Dendrite Matrix homeserver" --log="/var/log/$app/$app.log" --needs_exposed_ports "$tls_port"
 
 #=================================================
 # START SYSTEMD SERVICE
