@@ -87,7 +87,7 @@ ynh_add_nginx_config
 #=================================================
 ynh_script_progression --message="Upgrading dependencies..." --weight=1
 
-ynh_install_app_dependencies "$pkg_dependencies"
+ynh_exec_warn_less ynh_install_app_dependencies "$pkg_dependencies"
 
 # TODO: check Go version and upgrade if needed
 if ! command -v /usr/local/go/bin/go &> /dev/null

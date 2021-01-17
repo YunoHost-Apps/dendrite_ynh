@@ -73,7 +73,7 @@ ynh_app_setting_set --app=$app --key=tls_port --value=$tls_port
 #=================================================
 ynh_script_progression --message="Installing dependencies..." --weight=1
 
-ynh_install_app_dependencies $pkg_dependencies
+ynh_exec_warn_less ynh_install_app_dependencies $pkg_dependencies
 
 # Install Go if needed
 if ! command -v /usr/local/go/bin/go &> /dev/null
