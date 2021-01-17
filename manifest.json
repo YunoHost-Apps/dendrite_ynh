@@ -33,7 +33,7 @@
                 },
                 "help": {
                     "en": "Dendrite requires its own domain, so make sure to create a new one.",
-                    "fr": "Dendrite a besoin de son propre domain, créez-en un au préalable."
+                    "fr": "Dendrite a besoin de son propre domaine, créez-en un au préalable."
                 },
                 "example": "dendrite.example.com"
             },
