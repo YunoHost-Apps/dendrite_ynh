@@ -183,6 +183,9 @@ ynh_script_progression --message="Configuring log rotation..." --weight=1
 
 # Use logrotate to manage application logfile(s)
 ynh_use_logrotate
+# HACKY: Match the weirdly renamed rotated logs.
+# Looking at you, matrix-org/dugong library
+ynh_replace_string --match_string="/var/log/$app/*.log" --replace_string="/var/log/$app/*.log.????-??-??" --target_file="/etc/logrotate.d/$app"
 
 #=================================================
 # INTEGRATE SERVICE IN YUNOHOST
