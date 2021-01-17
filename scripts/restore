@@ -118,7 +118,7 @@ systemctl enable $app.service --quiet
 #=================================================
 ynh_script_progression --message="Integrating service in YunoHost..." --time --weight=1
 
-yunohost service add $app --description="Dendrite Matrix homeserver" --log="/var/log/$app/$app.log" --needs_exposed_ports "$tls_port"
+yunohost service add $app --description="Dendrite Matrix homeserver" --log="/var/log/$app/$app.log"# --needs_exposed_ports "$tls_port"
 
 #=================================================
 # START SYSTEMD SERVICE
