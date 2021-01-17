@@ -5,7 +5,7 @@
 #=================================================
 
 # dependencies used by the app
-pkg_dependencies="golang-go"
+#pkg_dependencies="golang-go"
 
 #=================================================
 # PERSONAL HELPERS
