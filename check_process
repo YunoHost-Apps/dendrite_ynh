@@ -1,7 +1,7 @@
 ;; Test complet
 	; Manifest
 		domain="domain.tld"	(DOMAIN)
-		path="/path"	(PATH)
+		path="/_matrix/client/versions"	(PATH)
 		is_public=1	(PUBLIC|public=1|private=0)
 		port="666"	(PORT)
 	; Checks
