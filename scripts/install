@@ -93,11 +93,13 @@ ynh_print_ON
 
 # Create postgresql database
 ynh_psql_test_if_first_run
+db_name=$app
 ynh_print_OFF
-ynh_psql_create_user $app $db_pwd
+ynh_psql_create_user $db_name $db_pwd
 ynh_print_ON
 ynh_psql_execute_as_root \
---sql="CREATE DATABASE $app ENCODING 'UTF8' LC_COLLATE='C' LC_CTYPE='C' template=template0 OWNER $app;"
+--sql="CREATE DATABASE $db_name ENCODING 'UTF8' LC_COLLATE='C' LC_CTYPE='C' template=template0 OWNER $app;"
+ynh_app_setting_set --app=$app --key=db_name --value=$db_name
 
 #=================================================
 # DOWNLOAD, CHECK AND UNPACK SOURCE
