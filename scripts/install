@@ -71,7 +71,11 @@ ynh_app_setting_set --app=$app --key=tls_port --value=$tls_port
 #=================================================
 # INSTALL DEPENDENCIES
 #=================================================
+ynh_script_progression --message="Installing dependencies..." --weight=1
 
+ynh_install_app_dependencies $pkg_dependencies
+
+# Install Go if needed
 if ! command -v /usr/local/go/bin/go &> /dev/null
 then
 	ynh_script_progression --message="Installing Go dependency... (this will take some time)" --time --weight=3
