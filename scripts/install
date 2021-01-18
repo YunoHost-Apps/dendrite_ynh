@@ -148,11 +148,10 @@ pushd "$final_path" || ynh_die
 popd || ynh_die
 
 # Allow or deny registration based of is_public
+registration=false
 if [ $is_public -eq 1 ]
 then
-	registration = true
-else
-	registration = false
+	registration=true
 fi
 
 # Copy and modify the config file
