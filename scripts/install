@@ -147,6 +147,14 @@ pushd "$final_path" || ynh_die
 	./bin/generate-keys --tls-cert server.crt --tls-key server.key
 popd || ynh_die
 
+# Allow or deny registration based of is_public
+if [ $is_public -eq 1 ]
+then
+	registration = true
+else
+	registration = false
+fi
+
 # Copy and modify the config file
 ynh_add_config --template="../conf/dendrite.yaml" --destination="$final_path/dentrite.yaml"
 
@@ -201,19 +209,6 @@ ynh_script_progression --message="Starting a systemd service..." --weight=1
 
 # Start a systemd service
 ynh_systemd_action --service_name=$app --action="start" --line_match="Started Dentrite Matrix homeserver" --log_path="systemd"
-
-#=================================================
-# SETUP SSOWAT
-#=================================================
-ynh_script_progression --message="Configuring permissions..." --weight=1
-
-# Make app public if necessary
-if [ $is_public -eq 1 ]
-then
-	# Everyone can access the app.
-	# The "main" permission is automatically created before the install script.
-	ynh_permission_update --permission="main" --add="visitors"
-fi
 
 #=================================================
 # RELOAD NGINX

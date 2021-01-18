@@ -44,7 +44,11 @@
                     "en": "Is it a public application?",
                     "fr": "Est-ce une application publique ?"
                 },
-                "default": true
+                "help": {
+                    "en": "A public server means that anybody will be able to register.",
+                    "fr": "Un serveur public permet à quiconque de s'y enregistrer."
+                },
+                "default": false
             }
         ]
     }
