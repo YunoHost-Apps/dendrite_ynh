@@ -7,7 +7,7 @@
         "fr": "Serveur Matrix de seconde génération"
     },
     "version": "1.0~ynh1",
-    "url": "https://example.com",
+    "url": "https://matrix.org/",
     "license": "Apache-2.0",
     "maintainer": {
         "name": "tituspijean",
@@ -24,6 +24,14 @@
     ],
     "arguments": {
         "install" : [
+            {
+                "name": "warning",
+                "type": "display_text",
+                "ask": {
+                    "en": "Dendrite is still in beta phase.\nIt is functional, but all Matrix features are yet to be implemented.\nSee the upstream repo for more information: https://github.com/matrix-org/dendrite\n\nThis package est encore en development, all features from Matrix/Synapse are yet to be implemented.",
+                    "fr": "Dendrite est encore en phase bêta.\nElle est fonctionnelle, mais n'implémente pas encore toutes les fonctionnalités de Matrix.\nConsultez le dépôt source pour plus d'information: https://github.com/matrix-org/dendrite\n\nCe package est encore en développement, toutes les fonctionalités de Matrix/Synapse ne sont pas encore implémentées."
+                }
+            },
             {
                 "name": "domain",
                 "type": "domain",
