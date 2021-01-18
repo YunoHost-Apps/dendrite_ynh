@@ -151,14 +151,14 @@ ynh_use_logrotate --non-append
 #=================================================
 ynh_script_progression --message="Integrating service in YunoHost..." --weight=1
 
-yunohost service add $app --description="Dendrite Matrix homeserver" --log="/var/log/$app/$app.log" --needs_exposed_ports "$tls_port"
+yunohost service add $app --description="Dendrite Matrix homeserver" --log="/var/log/$app/Monolith.log" --needs_exposed_ports "$tls_port"
 
 #=================================================
 # START SYSTEMD SERVICE
 #=================================================
 ynh_script_progression --message="Starting a systemd service..." --weight=1
 
-ynh_systemd_action --service_name=$app --action="start" --line_match="Started Dentrite Matrix homeserver" --log_path="systemd"
+ynh_systemd_action --service_name=$app --action="start" --line_match="Starting external Monolith listener" --log_path="systemd"
 
 #=================================================
 # RELOAD NGINX
