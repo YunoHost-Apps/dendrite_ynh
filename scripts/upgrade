@@ -112,8 +112,14 @@ ynh_system_user_create --username=$app
 #=================================================
 # SPECIFIC UPGRADE
 #=================================================
-# ...
+# BUILDING SOURCES AND SETTING UP THE SERVER
 #=================================================
+
+pushd "$final_path" || ynh_die
+        ynh_script_progression --message="Building the sources (it will take some time)..." --weight=6
+        # Build the sources
+        ynh_exec_warn_less ./build.sh
+popd || ynh_die
 
 #=================================================
 # SETUP SYSTEMD
