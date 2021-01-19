@@ -139,6 +139,7 @@ adduser $app ssl-cert
 pushd "$final_path" || ynh_die
 	ynh_script_progression --message="Building the sources (it will take some time)..." --weight=6
 	# Build the sources
+	mkdir ./bin
 	ynh_exec_warn_less ./build.sh
 	ynh_script_progression --message="Generating the keys..." --weight=1
 	# Generate a Matrix signing key for federation
