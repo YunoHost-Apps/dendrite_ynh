@@ -6,7 +6,7 @@
         "en": "Matrix homeserver of second generation",
         "fr": "Serveur Matrix de seconde génération"
     },
-    "version": "0.3.6~ynh1",
+    "version": "0.3.9~ynh1",
     "url": "https://matrix.org/",
     "license": "Apache-2.0",
     "maintainer": {
@@ -14,13 +14,12 @@
         "email": "tituspijean@outlook.com"
     },
     "requirements": {
-        "yunohost": ">= 3.7.0"
+        "yunohost": ">= 4.0.0"
     },
     "multi_instance": true,
     "services": [
         "nginx",
-        "php7.0-fpm",
-        "mysql"
+        "psql"
     ],
     "arguments": {
         "install" : [

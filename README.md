@@ -11,7 +11,7 @@ If you don't have YunoHost, please consult [the guide](https://yunohost.org/#/in
 ## Overview
 Dendrite is a second-generation Matrix homeserver written in Go. It intends to provide an efficient, reliable and scalable alternative to Synapse.
 
-**Shipped version:** 0.3.3
+**Shipped version:** 0.3.9
 
 :warning: The upstream app is still in beta. Tread carefully.
 
@@ -28,8 +28,8 @@ How to configure this app: from its configuration file.
 
 #### Multi-user support
 
-Are LDAP and HTTP auth supported? Not yet.
-Can the app be used by multiple users? Yes.
+ * Are LDAP and HTTP auth supported? Not yet.
+ * Can the app be used by multiple users? Yes.
 
 #### Supported architectures
 
@@ -51,7 +51,6 @@ Can the app be used by multiple users? Yes.
 
 ## Developer info
 
-**Only if you want to use a testing branch for coding, instead of merging directly into master.**
 Please send your pull request to the [testing branch](https://github.com/YunoHost-Apps/dendrite_ynh/tree/testing).
 
 To try the testing branch, please proceed like that.
