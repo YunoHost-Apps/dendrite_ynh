@@ -21,6 +21,11 @@ new_path=$YNH_APP_NEW_PATH
 
 app=$YNH_APP_INSTANCE_NAME
 
+# For systemd update
+domain=$YNH_APP_NEW_DOMAIN
+port=$(ynh_app_setting_get --app=$app --key=port)
+tls_port=$(ynh_app_setting_get --app=$app --key=tls_port)
+
 #=================================================
 # LOAD SETTINGS
 #=================================================
@@ -103,8 +108,12 @@ fi
 #=================================================
 # SPECIFIC MODIFICATIONS
 #=================================================
-# ...
+# SETUP SYSTEMD
 #=================================================
+ynh_script_progression --message="Updating systemd configuration..." --weight=1
+
+# Create a dedicated systemd config
+ynh_add_systemd_config --others_var="port tls_port domain"
 
 #=================================================
 # GENERIC FINALISATION
