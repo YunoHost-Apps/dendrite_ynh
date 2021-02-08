@@ -14,7 +14,7 @@
         "email": "tituspijean@outlook.com"
     },
     "requirements": {
-        "yunohost": ">= 4.0.0"
+        "yunohost": ">= 4.1.0"
     },
     "multi_instance": true,
     "services": [
