@@ -33,7 +33,11 @@ upgrade_type=$(ynh_check_app_version_changed)
 #=================================================
 # ENSURE DOWNWARD COMPATIBILITY
 #=================================================
-#ynh_script_progression --message="Ensuring downward compatibility..." --weight=1
+ynh_script_progression --message="Ensuring downward compatibility..." --weight=1
+
+if ! groups $app | grep -q 'ssl-cert'; then
+        adduser $app ssl-cert
+fi
 
 #=================================================
 # BACKUP BEFORE UPGRADE THEN ACTIVE TRAP
