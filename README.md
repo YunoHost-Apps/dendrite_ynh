@@ -11,7 +11,7 @@ If you don't have YunoHost, please consult [the guide](https://yunohost.org/#/in
 ## Overview
 Dendrite is a second-generation Matrix homeserver written in Go. It intends to provide an efficient, reliable and scalable alternative to Synapse.
 
-**Shipped version:** 0.3.9
+**Shipped version:** 0.3.11
 
 :warning: The upstream app is still in beta. Tread carefully.
 

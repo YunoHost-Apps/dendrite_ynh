@@ -6,7 +6,7 @@
         "en": "Matrix homeserver of second generation",
         "fr": "Serveur Matrix de seconde génération"
     },
-    "version": "0.3.9~ynh1",
+    "version": "0.3.11~ynh1",
     "url": "https://matrix.org/",
     "license": "Apache-2.0",
     "maintainer": {
@@ -14,7 +14,7 @@
         "email": "tituspijean@outlook.com"
     },
     "requirements": {
-        "yunohost": ">= 4.1.0"
+        "yunohost": ">= 4.1.7"
     },
     "multi_instance": true,
     "services": [
@@ -34,10 +34,6 @@
             {
                 "name": "domain",
                 "type": "domain",
-                "ask": {
-                    "en": "Choose a domain name for Dendrite",
-                    "fr": "Choisissez un nom de domaine pour Dendrite"
-                },
                 "help": {
                     "en": "Dendrite requires its own domain, so make sure to create a new one.",
                     "fr": "Dendrite a besoin de son propre domaine, créez-en un au préalable."
@@ -47,10 +43,6 @@
             {
                 "name": "is_public",
                 "type": "boolean",
-                "ask": {
-                    "en": "Is it a public application?",
-                    "fr": "Est-ce une application publique ?"
-                },
                 "help": {
                     "en": "A public server means that anybody will be able to register.",
                     "fr": "Un serveur public permet à quiconque de s'y enregistrer."
