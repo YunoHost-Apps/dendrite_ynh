@@ -6,15 +6,15 @@
         "en": "Matrix homeserver of second generation",
         "fr": "Serveur Matrix de seconde génération"
     },
-    "version": "1.0~ynh1",
-    "url": "https://example.com",
+    "version": "0.3.6~ynh1",
+    "url": "https://matrix.org/",
     "license": "Apache-2.0",
     "maintainer": {
         "name": "tituspijean",
         "email": "tituspijean@outlook.com"
     },
     "requirements": {
-        "yunohost": ">= 3.5"
+        "yunohost": ">= 3.7.0"
     },
     "multi_instance": true,
     "services": [
@@ -25,6 +25,14 @@
     "arguments": {
         "install" : [
             {
+                "name": "warning",
+                "type": "display_text",
+                "ask": {
+                    "en": "Dendrite is still in beta phase.\nIt is functional, but all Matrix features are yet to be implemented.\nSee the upstream repo for more information: https://github.com/matrix-org/dendrite\n\nThis package est encore en development, all features from Matrix/Synapse are yet to be implemented.",
+                    "fr": "Dendrite est encore en phase bêta.\nElle est fonctionnelle, mais n'implémente pas encore toutes les fonctionnalités de Matrix.\nConsultez le dépôt source pour plus d'information: https://github.com/matrix-org/dendrite\n\nCe package est encore en développement, toutes les fonctionalités de Matrix/Synapse ne sont pas encore implémentées."
+                }
+            },
+            {
                 "name": "domain",
                 "type": "domain",
                 "ask": {
@@ -33,7 +41,7 @@
                 },
                 "help": {
                     "en": "Dendrite requires its own domain, so make sure to create a new one.",
-                    "fr": "Dendrite a besoin de son propre domain, créez-en un au préalable."
+                    "fr": "Dendrite a besoin de son propre domaine, créez-en un au préalable."
                 },
                 "example": "dendrite.example.com"
             },
@@ -44,7 +52,11 @@
                     "en": "Is it a public application?",
                     "fr": "Est-ce une application publique ?"
                 },
-                "default": true
+                "help": {
+                    "en": "A public server means that anybody will be able to register.",
+                    "fr": "Un serveur public permet à quiconque de s'y enregistrer."
+                },
+                "default": false
             }
         ]
     }

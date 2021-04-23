@@ -127,7 +127,7 @@ client_api:
 
   # Prevents new users from being able to register on this homeserver, except when
   # using the registration shared secret below.
-  registration_disabled: false
+  registration_disabled: __REGISTRATION__
 
   # If set, allows registration by anyone who knows the shared secret, regardless of
   # whether registration is otherwise disabled.
@@ -347,5 +347,5 @@ logging:
 - type: file
   level: info
   params:
-    path: /var/log/dendrite
+    path: /var/log/__APP__
 
