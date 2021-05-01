@@ -156,7 +156,7 @@ then
 fi
 
 # Copy and modify the config file
-ynh_add_config --template="../conf/dendrite.yaml" --destination="$final_path/dentrite.yaml"
+ynh_add_config --template="../conf/dendrite.yaml" --destination="$final_path/dendrite.yaml"
 
 #=================================================
 # SETUP SYSTEMD
@@ -171,7 +171,7 @@ ynh_add_systemd_config --others_var="port tls_port domain env_path"
 #=================================================
 
 # Calculate and store the config file checksum into the app settings
-ynh_store_file_checksum --file="$final_path/dentrite.yaml"
+ynh_store_file_checksum --file="$final_path/dendrite.yaml"
 
 #=================================================
 # GENERIC FINALIZATION
