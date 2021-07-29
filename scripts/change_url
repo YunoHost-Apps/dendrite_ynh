@@ -113,7 +113,7 @@ fi
 ynh_script_progression --message="Updating systemd configuration..." --weight=1
 
 # Create a dedicated systemd config
-ynh_add_systemd_config --others_var="port tls_port domain"
+ynh_add_systemd_config
 
 #=================================================
 # GENERIC FINALISATION
