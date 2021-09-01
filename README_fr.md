@@ -11,9 +11,16 @@ Si vous n'avez pas YunoHost, regardez [ici](https://yunohost.org/#/install) pour
 
 ## Vue d'ensemble
 
-Serveur Matrix de seconde génération
+Dendrite is a second-generation Matrix homeserver written in Go. It intends to provide an efficient, reliable and scalable alternative to Synapse:
 
-**Version incluse :** 0.4.1~ynh1
+### Features
+
+- Efficient: A small memory footprint with better baseline performance than an out-of-the-box Synapse.
+- Reliable: Implements the Matrix specification as written, using the same test suite as Synapse as well as a brand new Go test suite.
+- Scalable: can run on multiple machines and eventually scale to massive homeserver deployments.
+
+
+**Version incluse :** 0.5.0~ynh1
 
 
 
