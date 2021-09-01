@@ -1,5 +1,5 @@
-SOURCE_URL=https://github.com/matrix-org/dendrite/archive/v0.4.1.zip
-SOURCE_SUM=458ef5652003280eb3acb6e7e6f59a6d99a741f6cdd26591612767443dd76451
+SOURCE_URL=https://github.com/matrix-org/dendrite/archive/v0.5.0.zip
+SOURCE_SUM=0e2923f19c90b808a1cd8bed3649cbd3c6b29ceb9c8d35716c92890a40d70c5b
 SOURCE_SUM_PRG=sha256sum
 SOURCE_FORMAT=zip
 SOURCE_IN_SUBDIR=true
