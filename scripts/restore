@@ -35,15 +35,13 @@ port=$(ynh_app_setting_get --app=$app --key=port)
 tls_port=$(ynh_app_setting_get --app=$app --key=tls_port)
 db_name=$(ynh_app_setting_get --app=$app --key=db_name)
 db_user=$db_name
-db_pwd=$(ynh_app_setting_get --app=$app --key=db_pwd)
+db_pwd=$(ynh_app_setting_get --app=$app --key=psqlpwd)
 
 #=================================================
 # CHECK IF THE APP CAN BE RESTORED
 #=================================================
 ynh_script_progression --message="Validating restoration parameters..." --weight=1
 
-ynh_webpath_available --domain=$domain --path_url=$path_url \
-	|| ynh_die --message="Path not available: ${domain}${path_url}"
 test ! -d $final_path \
 	|| ynh_die --message="There is already a directory: $final_path "
 

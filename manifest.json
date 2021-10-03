@@ -6,8 +6,15 @@
         "en": "Matrix homeserver of second generation",
         "fr": "Serveur Matrix de seconde génération"
     },
-    "version": "0.3.11~ynh1",
+    "version": "0.5.0~ynh1",
     "url": "https://matrix.org/",
+    "upstream": {
+        "license": "Apache-2.0",
+        "website": "https://matrix.org/",
+        "admindoc": "https://github.com/matrix-org/dendrite/tree/master/docs",
+        "userdoc": "https://yunohost.org/apps",
+        "code": "https://github.com/matrix-org/dendrite"
+    },
     "license": "Apache-2.0",
     "maintainer": {
         "name": "tituspijean",
@@ -37,8 +44,7 @@
                 "help": {
                     "en": "Dendrite requires its own domain, so make sure to create a new one.",
                     "fr": "Dendrite a besoin de son propre domaine, créez-en un au préalable."
-                },
-                "example": "dendrite.example.com"
+                }
             },
             {
                 "name": "is_public",
