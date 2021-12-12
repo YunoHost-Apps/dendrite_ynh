@@ -70,7 +70,7 @@ then
 	ynh_script_progression --message="Upgrading source files..." --weight=3
 
 	# Download, check integrity, uncompress and patch the source from app.src
-	ynh_setup_source --dest_dir="$final_path"
+	ynh_setup_source --dest_dir="$final_path" --keep="$final_path/dendrite.yaml"
 fi
 
 #=================================================
@@ -112,11 +112,11 @@ ynh_system_user_create --username=$app
 # BUILDING SOURCES AND SETTING UP THE SERVER
 #=================================================
 
-pushd "$final_path" || ynh_die
+pushd "$final_path"
         ynh_script_progression --message="Building the sources (it will take some time)..." --weight=6
         # Build the sources
         ynh_exec_warn_less ./build.sh
-popd || ynh_die
+popd
 
 #=================================================
 # SETUP SYSTEMD
@@ -125,10 +125,6 @@ ynh_script_progression --message="Upgrading systemd configuration..." --weight=1
 
 # Create a dedicated systemd config
 ynh_add_systemd_config
-
-#=================================================
-# MODIFY A CONFIG FILE
-#=================================================
 
 #=================================================
 # GENERIC FINALIZATION

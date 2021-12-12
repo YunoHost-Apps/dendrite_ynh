@@ -6,13 +6,12 @@
         "en": "Matrix homeserver of second generation",
         "fr": "Serveur Matrix de seconde génération"
     },
-    "version": "0.5.0~ynh1",
+    "version": "0.5.1~ynh1",
     "url": "https://matrix.org/",
     "upstream": {
         "license": "Apache-2.0",
         "website": "https://matrix.org/",
         "admindoc": "https://github.com/matrix-org/dendrite/tree/master/docs",
-        "userdoc": "https://yunohost.org/apps",
         "code": "https://github.com/matrix-org/dendrite"
     },
     "license": "Apache-2.0",
@@ -21,7 +20,7 @@
         "email": "tituspijean@outlook.com"
     },
     "requirements": {
-        "yunohost": ">= 4.1.7"
+        "yunohost": ">= 4.3.0"
     },
     "multi_instance": true,
     "services": [
