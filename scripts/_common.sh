@@ -7,6 +7,8 @@
 # dependencies used by the app
 pkg_dependencies="postgresql postgresql-contrib"
 
+go_version="1.16"
+
 #=================================================
 # PERSONAL HELPERS
 #=================================================

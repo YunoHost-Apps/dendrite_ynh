@@ -7,6 +7,7 @@
 #=================================================
 
 source _common.sh
+source ynh_install_go
 source /usr/share/yunohost/helpers
 
 #=================================================
@@ -68,21 +69,23 @@ ynh_app_setting_set --app=$app --key=port --value=$port
 ynh_app_setting_set --app=$app --key=tls_port --value=$tls_port
 
 #=================================================
+# CREATE DEDICATED USER
+#=================================================
+ynh_script_progression --message="Configuring system user..." --weight=1
+
+# Create a system user
+# It needs to be created before using the ynh_install_go helper
+ynh_system_user_create --username=$app --use_shell --groups="ssl-cert"
+
+#=================================================
 # INSTALL DEPENDENCIES
 #=================================================
 ynh_script_progression --message="Installing dependencies..." --weight=3
 
 ynh_exec_warn_less ynh_install_app_dependencies $pkg_dependencies
 
-# Install Go if needed
-if ! command -v /usr/local/go/bin/go &> /dev/null
-then
-	ynh_script_progression --message="Installing Go dependency... (this will take some time)" --weight=3
-	ynh_setup_source --source_id="go" --dest_dir="/usr/local/"
-fi
-
-export PATH=$PATH:/usr/local/go/bin
-env_path=$PATH
+# Install Go
+ynh_exec_warn_less ynh_install_go --go_version=$go_version
 
 #=================================================
 # CREATE A POSTGRESQL DATABASE
@@ -94,8 +97,8 @@ ynh_app_setting_set --app=$app --key=db_name --value=$db_name
 ynh_psql_test_if_first_run
 ynh_psql_setup_db --db_user=$db_name --db_name=$db_name
 
-ynh_psql_execute_as_root \
---sql="CREATE DATABASE $db_name ENCODING 'UTF8' LC_COLLATE='C' LC_CTYPE='C' template=template0 OWNER $app;"
+ynh_psql_execute_as_root --sql="DROP DATABASE $db_name"
+ynh_psql_execute_as_root --sql="CREATE DATABASE $db_name ENCODING 'UTF8' LC_COLLATE='C' LC_CTYPE='C' template=template0 OWNER $app;"
 
 #=================================================
 # DOWNLOAD, CHECK AND UNPACK SOURCE
@@ -115,25 +118,20 @@ ynh_script_progression --message="Configuring NGINX web server..." --weight=1
 ynh_add_nginx_config
 
 #=================================================
-# CREATE DEDICATED USER
-#=================================================
-ynh_script_progression --message="Configuring system user..." --weight=1
-
-# Create a system user
-ynh_system_user_create --username=$app
-adduser $app ssl-cert
-
-#=================================================
 # SPECIFIC SETUP
 #=================================================
 # BUILDING SOURCES AND SETTING UP THE SERVER
 #=================================================
 
+ynh_use_go
+
+mkdir -p "$final_path/bin"
+chown -R $app:root $final_path
+
 pushd "$final_path"
 	ynh_script_progression --message="Building the sources (it will take some time)..." --weight=6
 	# Build the sources
-	mkdir ./bin
-	ynh_exec_warn_less ./build.sh
+	ynh_exec_warn_less ynh_exec_as $app $ynh_go_load_path HOME=$final_path ./build.sh
 	ynh_script_progression --message="Generating the keys..." --weight=1
 	# Generate a Matrix signing key for federation
 	./bin/generate-keys --private-key matrix_key.pem

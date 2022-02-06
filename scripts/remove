@@ -7,6 +7,7 @@
 #=================================================
 
 source _common.sh
+source ynh_install_go
 source /usr/share/yunohost/helpers
 
 #=================================================
@@ -57,6 +58,9 @@ ynh_script_progression --message="Removing dependencies..." --weight=3
 
 # Remove metapackage and its dependencies
 ynh_remove_app_dependencies
+
+# Remove Go
+ynh_remove_go
 
 #=================================================
 # REMOVE APP MAIN DIR
