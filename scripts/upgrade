@@ -7,6 +7,7 @@
 #=================================================
 
 source _common.sh
+source ynh_install_go
 source /usr/share/yunohost/helpers
 
 #=================================================
@@ -82,29 +83,23 @@ ynh_script_progression --message="Upgrading NGINX web server configuration..." -
 ynh_add_nginx_config
 
 #=================================================
+# CREATE DEDICATED USER
+#=================================================
+ynh_script_progression --message="Making sure dedicated system user exists..." --weight=1
+
+# Create a dedicated user (if not existing)
+# It needs to be created before using the ynh_install_go helper
+ynh_system_user_create --username=$app --use_shell --groups="ssl-cert"
+
+#=================================================
 # UPGRADE DEPENDENCIES
 #=================================================
 ynh_script_progression --message="Upgrading dependencies..." --weight=1
 
 ynh_exec_warn_less ynh_install_app_dependencies "$pkg_dependencies"
 
-# TODO: check Go version and upgrade if needed
-if ! command -v /usr/local/go/bin/go &> /dev/null
-then
-        ynh_script_progression --message="Installing Go dependency... (this will take some time)" --weight=3
-        ynh_setup_source --source_id="go" --dest_dir="/usr/local/"
-fi
-
-export PATH=$PATH:/usr/local/go/bin
-env_path=$PATH
-
-#=================================================
-# CREATE DEDICATED USER
-#=================================================
-ynh_script_progression --message="Making sure dedicated system user exists..." --weight=1
-
-# Create a dedicated user (if not existing)
-ynh_system_user_create --username=$app
+# Install Go
+ynh_exec_warn_less ynh_install_go --go_version=$go_version
 
 #=================================================
 # SPECIFIC UPGRADE
@@ -112,10 +107,15 @@ ynh_system_user_create --username=$app
 # BUILDING SOURCES AND SETTING UP THE SERVER
 #=================================================
 
+ynh_use_go
+
+mkdir -p "$final_path/bin"
+chown -R $app:root $final_path
+
 pushd "$final_path"
         ynh_script_progression --message="Building the sources (it will take some time)..." --weight=6
         # Build the sources
-        ynh_exec_warn_less ./build.sh
+        ynh_exec_warn_less ynh_exec_as $app $ynh_go_load_path HOME=$final_path ./build.sh
 popd
 
 #=================================================
