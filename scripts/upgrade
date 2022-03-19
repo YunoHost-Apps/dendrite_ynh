@@ -81,7 +81,7 @@ then
 	ynh_script_progression --message="Upgrading source files..." --weight=3
 
 	# Download, check integrity, uncompress and patch the source from app.src
-	ynh_setup_source --dest_dir="$final_path" --keep="$final_path/dendrite.yaml"
+	ynh_setup_source --dest_dir="$final_path/build" --keep="$final_path/dendrite.yaml"
 fi
 
 chmod 750 "$final_path"
@@ -114,16 +114,29 @@ then
 	ynh_script_progression --message="Building the sources (it will take some time)..." --weight=6
 
 	ynh_install_go --go_version=$GO_VERSION
-	pushd "$final_path"
+
+	pushd "$final_path/build"
+		# Build the sources
 		ynh_use_go
-	        # Build the sources
-	        ynh_exec_warn_less ./build.sh
+		CGO_ENABLED=1 go build -trimpath -v -o "$final_path/bin/" ./cmd/...
+		CGO_ENABLED=0 GOOS=js GOARCH=wasm go build -trimpath -o "$final_path/bin/main.wasm" ./cmd/dendritejs-pinecone
 	popd
 
+	ynh_secure_remove --file="$final_path/build"
 	ynh_remove_go
 fi
 
 chown -R $app:root "$final_path"
+
+#=================================================
+# UPDATE A CONFIG FILE
+#=================================================
+ynh_script_progression --message="Updating a configuration file..."
+
+ynh_add_config --template="../conf/dendrite.yaml" --destination="$final_path/dendrite.yaml"
+
+chmod 400 "$final_path/dendrite.yaml"
+chown $app:$app "$final_path/dendrite.yaml"
 
 #=================================================
 # SETUP SYSTEMD
