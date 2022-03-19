@@ -129,7 +129,7 @@ pushd "$final_path"
 	# Build the sources
 	mkdir ./bin
 	ynh_exec_warn_less ./build.sh
-	read -p "999"
+
 	ynh_script_progression --message="Generating the keys..." --weight=1
 	# Generate a Matrix signing key for federation
 	./bin/generate-keys --private-key matrix_key.pem
