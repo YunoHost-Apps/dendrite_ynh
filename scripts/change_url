@@ -75,7 +75,7 @@ fi
 #=================================================
 ynh_script_progression --message="Stopping a systemd service..." --weight=1
 
-ynh_systemd_action --service_name=$app --action="stop"
+ynh_systemd_action --service_name=$app --action="stop" --line_match="Stopped Dendrite Matrix homeserver" --log_path="systemd"
 
 #=================================================
 # MODIFY URL IN NGINX CONF
@@ -124,7 +124,7 @@ ynh_add_systemd_config
 ynh_script_progression --message="Starting a systemd service..." --weight=1
 
 # Start a systemd service
-ynh_systemd_action --service_name=$app --action="start" --line_match="Starting external Monolith listener" --log_path="systemd"
+ynh_systemd_action --service_name=$app --action="start" --line_match="Starting external Monolith listener" --log_path="/var/log/$app/$app.log"
 
 #=================================================
 # RELOAD NGINX

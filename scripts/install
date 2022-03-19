@@ -126,8 +126,10 @@ ynh_install_go --go_version=$GO_VERSION
 pushd "$final_path/build"
 	# Build the sources
 	ynh_use_go
-	CGO_ENABLED=1 go build -trimpath -v -o "$final_path/bin/" ./cmd/...
-	CGO_ENABLED=0 GOOS=js GOARCH=wasm go build -trimpath -o "$final_path/bin/main.wasm" ./cmd/dendritejs-pinecone
+	CGO_ENABLED=1 go build -trimpath -v -o "$final_path/bin/" ./cmd/dendrite-monolith-server
+	CGO_ENABLED=1 go build -trimpath -v -o "$final_path/bin/" ./cmd/goose
+	CGO_ENABLED=1 go build -trimpath -v -o "$final_path/bin/" ./cmd/create-account
+	CGO_ENABLED=1 go build -trimpath -v -o "$final_path/bin/" ./cmd/generate-keys
 popd
 
 ynh_secure_remove --file="$final_path/build"
@@ -200,7 +202,7 @@ yunohost service add $app --description="Dendrite Matrix homeserver" --log="/var
 ynh_script_progression --message="Starting a systemd service..." --weight=1
 
 # Start a systemd service
-ynh_systemd_action --service_name=$app --action="start" --line_match="Starting external Monolith listener" --log_path="systemd"
+ynh_systemd_action --service_name=$app --action="start" --line_match="Starting external Monolith listener" --log_path="/var/log/$app/$app.log"
 
 #=================================================
 # RELOAD NGINX
