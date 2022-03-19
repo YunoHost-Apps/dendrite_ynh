@@ -21,11 +21,6 @@ new_path=$YNH_APP_NEW_PATH
 
 app=$YNH_APP_INSTANCE_NAME
 
-# For systemd update
-domain=$YNH_APP_NEW_DOMAIN
-port=$(ynh_app_setting_get --app=$app --key=port)
-tls_port=$(ynh_app_setting_get --app=$app --key=tls_port)
-
 #=================================================
 # LOAD SETTINGS
 #=================================================
@@ -34,14 +29,20 @@ ynh_script_progression --message="Loading installation settings..." --weight=1
 # Needed for helper "ynh_add_nginx_config"
 final_path=$(ynh_app_setting_get --app=$app --key=final_path)
 
+# Add settings here as needed by your application
+domain=$YNH_APP_NEW_DOMAIN
+port=$(ynh_app_setting_get --app=$app --key=port)
+tls_port=$(ynh_app_setting_get --app=$app --key=tls_port)
+
 #=================================================
-# BACKUP BEFORE UPGRADE THEN ACTIVE TRAP
+# BACKUP BEFORE CHANGE URL THEN ACTIVE TRAP
 #=================================================
 ynh_script_progression --message="Backing up the app before changing its URL (may take a while)..." --weight=1
 
 # Backup the current version of the app
 ynh_backup_before_upgrade
 ynh_clean_setup () {
+	ynh_clean_check_starting
 	# Remove the new domain config file, the remove script won't do it as it doesn't know yet its location.
 	ynh_secure_remove --file="/etc/nginx/conf.d/$new_domain.d/$app.conf"
 
@@ -122,6 +123,7 @@ ynh_add_systemd_config
 #=================================================
 ynh_script_progression --message="Starting a systemd service..." --weight=1
 
+# Start a systemd service
 ynh_systemd_action --service_name=$app --action="start" --line_match="Starting external Monolith listener" --log_path="systemd"
 
 #=================================================
