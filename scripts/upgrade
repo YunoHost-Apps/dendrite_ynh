@@ -137,6 +137,13 @@ chown -R $app:root "$final_path"
 #=================================================
 ynh_script_progression --message="Updating a configuration file..."
 
+if ynh_permission_has_user --permission=main --user=visitors
+then
+	registration="true"
+else
+	registration="false"
+fi
+
 ynh_add_config --template="../conf/dendrite.yaml" --destination="$final_path/dendrite.yaml"
 
 chmod 400 "$final_path/dendrite.yaml"
