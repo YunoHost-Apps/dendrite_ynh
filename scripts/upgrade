@@ -115,15 +115,15 @@ if [ "$upgrade_type" == "UPGRADE_APP" ]
 then
 	ynh_script_progression --message="Building the sources (it will take some time)..." --weight=6
 
-	ynh_install_go --go_version=$GO_VERSION
+	ynh_exec_warn_less ynh_install_go --go_version=$GO_VERSION
 
 	pushd "$final_path/build"
 		# Build the sources
 		ynh_use_go
-		CGO_ENABLED=1 go build -trimpath -v -o "$final_path/bin/" ./cmd/dendrite-monolith-server
-		CGO_ENABLED=1 go build -trimpath -v -o "$final_path/bin/" ./cmd/goose
-		CGO_ENABLED=1 go build -trimpath -v -o "$final_path/bin/" ./cmd/create-account
-		CGO_ENABLED=1 go build -trimpath -v -o "$final_path/bin/" ./cmd/generate-keys
+		ynh_exec_warn_less CGO_ENABLED=1 go build -trimpath -v -o "$final_path/bin/" ./cmd/dendrite-monolith-server
+		ynh_exec_warn_less CGO_ENABLED=1 go build -trimpath -v -o "$final_path/bin/" ./cmd/goose
+		ynh_exec_warn_less CGO_ENABLED=1 go build -trimpath -v -o "$final_path/bin/" ./cmd/create-account
+		ynh_exec_warn_less =1 go build -trimpath -v -o "$final_path/bin/" ./cmd/generate-keys
 	popd
 
 	ynh_secure_remove --file="$final_path/build"
