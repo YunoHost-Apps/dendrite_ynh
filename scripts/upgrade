@@ -120,10 +120,9 @@ then
 	pushd "$final_path/build"
 		# Build the sources
 		ynh_use_go
-		ynh_exec_warn_less CGO_ENABLED=1 go build -trimpath -v -o "$final_path/bin/" ./cmd/dendrite-monolith-server
-		ynh_exec_warn_less CGO_ENABLED=1 go build -trimpath -v -o "$final_path/bin/" ./cmd/goose
-		ynh_exec_warn_less CGO_ENABLED=1 go build -trimpath -v -o "$final_path/bin/" ./cmd/create-account
-		ynh_exec_warn_less =1 go build -trimpath -v -o "$final_path/bin/" ./cmd/generate-keys
+		CGO_ENABLED=1 go build -trimpath -v -o "$final_path/bin/" ./cmd/dendrite-monolith-server > /dev/null 2>&1
+		CGO_ENABLED=1 go build -trimpath -v -o "$final_path/bin/" ./cmd/goose > /dev/null 2>&1
+		CGO_ENABLED=1 go build -trimpath -v -o "$final_path/bin/" ./cmd/create-account > /dev/null 2>&1
 	popd
 
 	ynh_secure_remove --file="$final_path/build"
