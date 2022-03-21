@@ -6,7 +6,7 @@
         "en": "Matrix homeserver of second generation",
         "fr": "Serveur Matrix de seconde génération"
     },
-    "version": "0.5.1~ynh1",
+    "version": "0.6.5~ynh1",
     "url": "https://matrix.org/",
     "upstream": {
         "license": "Apache-2.0",
@@ -24,11 +24,10 @@
     },
     "multi_instance": true,
     "services": [
-        "nginx",
-        "psql"
+        "nginx"
     ],
     "arguments": {
-        "install" : [
+        "install": [
             {
                 "name": "warning",
                 "type": "display_text",
@@ -39,19 +38,11 @@
             },
             {
                 "name": "domain",
-                "type": "domain",
-                "help": {
-                    "en": "Dendrite requires its own domain, so make sure to create a new one.",
-                    "fr": "Dendrite a besoin de son propre domaine, créez-en un au préalable."
-                }
+                "type": "domain"
             },
             {
                 "name": "is_public",
                 "type": "boolean",
-                "help": {
-                    "en": "A public server means that anybody will be able to register.",
-                    "fr": "Un serveur public permet à quiconque de s'y enregistrer."
-                },
                 "default": false
             }
         ]
