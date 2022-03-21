@@ -7,6 +7,7 @@
 #=================================================
 
 source _common.sh
+source ynh_install_go
 source /usr/share/yunohost/helpers
 
 #=================================================
@@ -14,8 +15,7 @@ source /usr/share/yunohost/helpers
 #=================================================
 
 ynh_clean_setup () {
-	### Remove this function if there's nothing to clean before calling the remove script.
-	true
+	ynh_clean_check_starting
 }
 # Exit if an error occurs during the execution of the script
 ynh_abort_if_errors
@@ -58,14 +58,12 @@ ynh_script_progression --message="Configuring firewall..." --weight=1
 
 # Find available ports
 port=$(ynh_find_port --port=8008)
+ynh_app_setting_set --app=$app --key=port --value=$port
 tls_port=$(ynh_find_port --port=8448)
+ynh_app_setting_set --app=$app --key=tls_port --value=$tls_port
 
 # Open TLS port
 ynh_exec_warn_less yunohost firewall allow TCP $tls_port
-
-# Store opened ports
-ynh_app_setting_set --app=$app --key=port --value=$port
-ynh_app_setting_set --app=$app --key=tls_port --value=$tls_port
 
 #=================================================
 # INSTALL DEPENDENCIES
@@ -74,15 +72,14 @@ ynh_script_progression --message="Installing dependencies..." --weight=3
 
 ynh_exec_warn_less ynh_install_app_dependencies $pkg_dependencies
 
-# Install Go if needed
-if ! command -v /usr/local/go/bin/go &> /dev/null
-then
-	ynh_script_progression --message="Installing Go dependency... (this will take some time)" --weight=3
-	ynh_setup_source --source_id="go" --dest_dir="/usr/local/"
-fi
+#=================================================
+# CREATE DEDICATED USER
+#=================================================
+ynh_script_progression --message="Configuring system user..." --weight=1
 
-export PATH=$PATH:/usr/local/go/bin
-env_path=$PATH
+# Create a system user
+ynh_system_user_create --username=$app --home_dir="$final_path"
+adduser $app ssl-cert
 
 #=================================================
 # CREATE A POSTGRESQL DATABASE
@@ -90,12 +87,11 @@ env_path=$PATH
 ynh_script_progression --message="Creating a PostgreSQL database..." --weight=2
 
 db_name=$(ynh_sanitize_dbid --db_name=$app)
+db_user=$db_name
 ynh_app_setting_set --app=$app --key=db_name --value=$db_name
 ynh_psql_test_if_first_run
-ynh_psql_setup_db --db_user=$db_name --db_name=$db_name
-
-ynh_psql_execute_as_root \
---sql="CREATE DATABASE $db_name ENCODING 'UTF8' LC_COLLATE='C' LC_CTYPE='C' template=template0 OWNER $app;"
+ynh_psql_setup_db --db_user=$db_user --db_name=$db_name
+ynh_psql_execute_as_root --sql="CREATE DATABASE $db_name ENCODING 'UTF8' LC_COLLATE='C' LC_CTYPE='C' template=template0 OWNER $app;"
 
 #=================================================
 # DOWNLOAD, CHECK AND UNPACK SOURCE
@@ -104,7 +100,11 @@ ynh_script_progression --message="Setting up source files..." --weight=2
 
 ynh_app_setting_set --app=$app --key=final_path --value=$final_path
 # Download, check integrity, uncompress and patch the source from app.src
-ynh_setup_source --dest_dir="$final_path"
+ynh_setup_source --dest_dir="$final_path/build"
+
+chmod 750 "$final_path"
+chmod -R o-rwx "$final_path"
+chown -R $app:root "$final_path"
 
 #=================================================
 # NGINX CONFIGURATION
@@ -115,31 +115,42 @@ ynh_script_progression --message="Configuring NGINX web server..." --weight=1
 ynh_add_nginx_config
 
 #=================================================
-# CREATE DEDICATED USER
-#=================================================
-ynh_script_progression --message="Configuring system user..." --weight=1
-
-# Create a system user
-ynh_system_user_create --username=$app
-adduser $app ssl-cert
-
-#=================================================
 # SPECIFIC SETUP
 #=================================================
 # BUILDING SOURCES AND SETTING UP THE SERVER
 #=================================================
+ynh_script_progression --message="Building the sources (it will take some time)..." --weight=6
+
+ynh_exec_warn_less ynh_install_go --go_version=$GO_VERSION
+
+pushd "$final_path/build"
+	# Build the sources
+	ynh_use_go
+	CGO_ENABLED=1 go build -trimpath -v -o "$final_path/bin/" ./cmd/dendrite-monolith-server > /dev/null 2>&1
+	CGO_ENABLED=1 go build -trimpath -v -o "$final_path/bin/" ./cmd/goose > /dev/null 2>&1
+	CGO_ENABLED=1 go build -trimpath -v -o "$final_path/bin/" ./cmd/create-account > /dev/null 2>&1
+	CGO_ENABLED=1 go build -trimpath -v -o "$final_path/bin/" ./cmd/generate-keys > /dev/null 2>&1
+popd
+
+ynh_secure_remove --file="$final_path/build"
+ynh_remove_go
+
+ynh_script_progression --message="Generating the keys..." --weight=1
 
 pushd "$final_path"
-	ynh_script_progression --message="Building the sources (it will take some time)..." --weight=6
-	# Build the sources
-	mkdir ./bin
-	ynh_exec_warn_less ./build.sh
-	ynh_script_progression --message="Generating the keys..." --weight=1
 	# Generate a Matrix signing key for federation
 	./bin/generate-keys --private-key matrix_key.pem
 	# Generate a self-signed certificate
 	./bin/generate-keys --tls-cert server.crt --tls-key server.key
 popd
+
+# Set permissions to app files
+chown -R $app:root "$final_path"
+
+#=================================================
+# ADD A CONFIGURATION
+#=================================================
+ynh_script_progression --message="Adding a configuration file..."
 
 # Allow or deny registration based of is_public
 registration=false
@@ -150,6 +161,9 @@ fi
 
 # Copy and modify the config file
 ynh_add_config --template="../conf/dendrite.yaml" --destination="$final_path/dendrite.yaml"
+
+chmod 400 "$final_path/dendrite.yaml"
+chown $app:$app "$final_path/dendrite.yaml"
 
 #=================================================
 # SETUP SYSTEMD
@@ -162,18 +176,12 @@ ynh_add_systemd_config
 #=================================================
 # GENERIC FINALIZATION
 #=================================================
-# SECURE FILES AND DIRECTORIES
-#=================================================
-
-# Set permissions to app files
-chown -R $app:root $final_path
-mkdir -p /var/log/$app
-chown -R $app:root /var/log/$app
-
-#=================================================
 # SETUP LOGROTATE
 #=================================================
 ynh_script_progression --message="Configuring log rotation..." --weight=1
+
+mkdir -p /var/log/$app
+chown -R $app:root /var/log/$app
 
 # Use logrotate to manage application logfile(s)
 ynh_use_logrotate
@@ -194,7 +202,7 @@ yunohost service add $app --description="Dendrite Matrix homeserver" --log="/var
 ynh_script_progression --message="Starting a systemd service..." --weight=1
 
 # Start a systemd service
-ynh_systemd_action --service_name=$app --action="start" --line_match="Starting external Monolith listener" --log_path="systemd"
+ynh_systemd_action --service_name=$app --action="start" --line_match="Starting external Monolith listener" --log_path="/var/log/$app/$app.log"
 
 #=================================================
 # RELOAD NGINX
