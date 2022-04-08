@@ -120,6 +120,8 @@ then
 	pushd "$final_path/build"
 		# Build the sources
 		ynh_use_go
+		export GOPATH="$final_path/build/go"
+		export GOCACHE="$final_path/build/.cache"
 		CGO_ENABLED=1 go build -trimpath -v -o "$final_path/bin/" ./cmd/dendrite-monolith-server > /dev/null 2>&1
 		CGO_ENABLED=1 go build -trimpath -v -o "$final_path/bin/" ./cmd/goose > /dev/null 2>&1
 		CGO_ENABLED=1 go build -trimpath -v -o "$final_path/bin/" ./cmd/create-account > /dev/null 2>&1
