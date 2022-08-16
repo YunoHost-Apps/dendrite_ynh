@@ -36,9 +36,9 @@ export GOENV_ROOT="$goenv_install_dir"
 # Finally, to start a Go service with the correct version, 2 solutions
 #  Either the app is dependent of Go or gem, but does not called it directly.
 #  In such situation, you need to load PATH
-#    `Environment="__YNH_GO_LOAD_ENV_PATH__"`
+#    `Environment="__YNH_GO_LOAD_PATH__"`
 #    `ExecStart=__FINALPATH__/my_app`
-#     You will replace __YNH_GO_LOAD_ENV_PATH__ with $ynh_go_load_path
+#     You will replace __YNH_GO_LOAD_PATH__ with $ynh_go_load_path
 #
 #  Or Go start the app directly, then you don't need to load the PATH variable
 #    `ExecStart=__YNH_GO__ my_app run`
@@ -224,7 +224,7 @@ ynh_cleanup_go () {
             required_go_versions="${installed_app_go_version}\n${required_go_versions}"
         fi
     done
-
+    
     # Remove no more needed Go versions
     local installed_go_versions=$(goenv versions --bare --skip-aliases | grep -Ev '/')
     for installed_go_version in $installed_go_versions
