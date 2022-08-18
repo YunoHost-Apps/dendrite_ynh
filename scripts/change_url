@@ -7,6 +7,7 @@
 #=================================================
 
 source _common.sh
+source ynh_install_go
 source /usr/share/yunohost/helpers
 
 #=================================================
@@ -112,6 +113,9 @@ fi
 # SETUP SYSTEMD
 #=================================================
 ynh_script_progression --message="Updating systemd configuration..." --weight=1
+
+# Load the Go environment path
+ynh_use_go
 
 # Create a dedicated systemd config
 ynh_add_systemd_config
