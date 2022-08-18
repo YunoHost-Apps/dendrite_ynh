@@ -66,6 +66,15 @@ ynh_app_setting_set --app=$app --key=tls_port --value=$tls_port
 ynh_exec_warn_less yunohost firewall allow TCP $tls_port
 
 #=================================================
+# CREATE DEDICATED USER
+#=================================================
+ynh_script_progression --message="Configuring system user..." --weight=1
+
+# Create a system user
+# It needs to be created before using the ynh_install_go helper
+ynh_system_user_create --username=$app --use_shell --groups="ssl-cert"
+
+#=================================================
 # INSTALL DEPENDENCIES
 #=================================================
 ynh_script_progression --message="Installing dependencies..." --weight=3
@@ -78,8 +87,7 @@ ynh_exec_warn_less ynh_install_app_dependencies $pkg_dependencies
 ynh_script_progression --message="Configuring system user..." --weight=1
 
 # Create a system user
-ynh_system_user_create --username=$app --home_dir="$final_path"
-adduser $app ssl-cert
+ynh_system_user_create --username=$app --home_dir="$final_path" --groups="ssl-cert"
 
 #=================================================
 # CREATE A POSTGRESQL DATABASE

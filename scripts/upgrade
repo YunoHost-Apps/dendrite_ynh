@@ -99,7 +99,7 @@ ynh_script_progression --message="Upgrading NGINX web server configuration..." -
 ynh_add_nginx_config
 
 #=================================================
-# UPGRADE DEPENDENCIES
+# CREATE DEDICATED USER
 #=================================================
 ynh_script_progression --message="Upgrading dependencies..." --weight=1
 
