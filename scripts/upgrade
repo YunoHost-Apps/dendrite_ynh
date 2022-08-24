@@ -162,6 +162,35 @@ ynh_add_systemd_config
 #=================================================
 # GENERIC FINALIZATION
 #=================================================
+# SETUP PERMISSIONS
+#=================================================
+ynh_script_progression --message="Configuring permissions..." --weight=1
+
+ynh_permission_update --permission=main --show_tile=false --protected=true
+
+if ! ynh_permission_exists --permission=server_api; then
+    ynh_permission_create --permission=server_api --url=$domain/_matrix \
+                          --label="Server access for client apps." --show_tile=false --allowed=visitors \
+                          --auth_header=false --protected=true
+else
+    ynh_permission_url --permission=server_api --url=$domain/_matrix --remove_url=$server_name/.well-known/matrix \
+                       --auth_header=false
+    ynh_permission_update --permission=server_api --label="Server access for client apps." --show_tile=false \
+                          --protected=true
+fi
+
+if yunohost --output-as plain domain list | grep -q "^$server_name"'$' && ! ynh_permission_exists --permission=server_client_infos; then
+    ynh_permission_create --permission=server_client_infos --url=$server_name/.well-known/matrix \
+                          --label="Server info for clients. (well-known)" --show_tile=false --allowed=visitors \
+                          --auth_header=false --protected=true
+elif yunohost --output-as plain domain list | grep -q "^$server_name"'$'; then
+    ynh_permission_url --permission=server_client_infos --url=$server_name/.well-known/matrix \
+                       --auth_header=false
+    ynh_permission_update --permission=server_client_infos --label="Server info for clients. (well-known)" --show_tile=false \
+                          --protected=true
+fi
+
+#=================================================
 # SETUP LOGROTATE
 #=================================================
 ynh_script_progression --message="Upgrading logrotate configuration..." --weight=1
