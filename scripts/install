@@ -26,6 +26,7 @@ ynh_abort_if_errors
 
 domain=$YNH_APP_ARG_DOMAIN
 path_url="/"
+server_name=$YNH_APP_ARG_SERVER_NAME
 is_public=$YNH_APP_ARG_IS_PUBLIC
 
 app=$YNH_APP_INSTANCE_NAME
@@ -48,6 +49,7 @@ ynh_script_progression --message="Storing installation settings..." --weight=1
 
 ynh_app_setting_set --app=$app --key=domain --value=$domain
 ynh_app_setting_set --app=$app --key=path --value=$path_url
+ynh_app_setting_set --app=$app --key=server_name --value=$server_name
 
 #=================================================
 # STANDARD MODIFICATIONS
@@ -121,6 +123,12 @@ ynh_script_progression --message="Configuring NGINX web server..." --weight=1
 
 # Create a dedicated NGINX config
 ynh_add_nginx_config
+
+# Create .well-known redirection for access by federation
+if yunohost --output-as plain domain list | grep -q "^$server_name$"
+then
+    ynh_add_config --template="server_name.conf" --destination="/etc/nginx/conf.d/${server_name}.d/${app}_server_name.conf"
+fi
 
 #=================================================
 # SPECIFIC SETUP

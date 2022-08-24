@@ -29,6 +29,7 @@ app=$YNH_APP_INSTANCE_NAME
 
 final_path=$(ynh_app_setting_get --app=$app --key=final_path)
 domain=$(ynh_app_setting_get --app=$app --key=domain)
+server_name=$(ynh_app_setting_get --app=$app --key=server_name)
 db_name=$(ynh_app_setting_get --app=$app --key=db_name)
 
 #=================================================
@@ -61,6 +62,11 @@ ynh_backup --src_path="/etc/logrotate.d/$app"
 #=================================================
 
 ynh_backup --src_path="/etc/systemd/system/$app.service"
+
+if yunohost --output-as plain domain list | grep -q "^$server_name$"
+then
+    ynh_backup --src_path="/etc/nginx/conf.d/${server_name}.d/${app}_server_name.conf"
+fi
 
 #=================================================
 # BACKUP VARIOUS FILES

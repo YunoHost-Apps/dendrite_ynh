@@ -29,6 +29,7 @@ ynh_script_progression --message="Loading installation settings..." --weight=1
 app=$YNH_APP_INSTANCE_NAME
 
 domain=$(ynh_app_setting_get --app=$app --key=domain)
+server_name=$(ynh_app_setting_get --app=$app --key=server_name)
 path_url=$(ynh_app_setting_get --app=$app --key=path)
 final_path=$(ynh_app_setting_get --app=$app --key=final_path)
 port=$(ynh_app_setting_get --app=$app --key=port)
@@ -47,11 +48,14 @@ test ! -d $final_path \
 #=================================================
 # STANDARD RESTORATION STEPS
 #=================================================
-# RESTORE THE NGINX CONFIGURATION
+# RESTORE ALL CONFIG AND DATA
 #=================================================
-ynh_script_progression --message="Restoring the NGINX web server configuration..."
+ynh_script_progression --message="Restoring directory and configuration..." --weight=10
 
-ynh_restore_file --origin_path="/etc/nginx/conf.d/$domain.d/$app.conf"
+mkdir -p /var/log/$app
+chown -R $app:root /var/log/$app
+
+ynh_restore
 
 #=================================================
 # RECREATE THE DEDICATED USER
@@ -64,9 +68,7 @@ ynh_system_user_create --username=$app --home_dir="$final_path" --groups="ssl-ce
 #=================================================
 # RESTORE THE APP MAIN DIR
 #=================================================
-ynh_script_progression --message="Restoring the app main directory..." --weight=1
-
-ynh_restore_file --origin_path="$final_path"
+ynh_script_progression --message="Restoring the app main directory permissions..." --weight=1
 
 chmod 750 "$final_path"
 chmod -R o-rwx "$final_path"
@@ -95,27 +97,15 @@ ynh_psql_execute_file_as_root --file="./db.sql" --database=$db_name
 #=================================================
 # RESTORE SYSTEMD
 #=================================================
-ynh_script_progression --message="Restoring the systemd configuration..." --weight=1
+ynh_script_progression --message="Enabling the systemd service..." --weight=1
 
-ynh_restore_file --origin_path="/etc/systemd/system/$app.service"
 systemctl enable $app.service --quiet
-
-#=================================================
-# RESTORE THE LOGROTATE CONFIGURATION
-#=================================================
-ynh_script_progression --message="Restoring the logrotate configuration..."
-
-mkdir -p /var/log/$app
-chown -R $app:root /var/log/$app
-
-ynh_restore_file --origin_path="/etc/logrotate.d/$app"
 
 #=================================================
 # INTEGRATE SERVICE IN YUNOHOST
 #=================================================
 ynh_script_progression --message="Integrating service in YunoHost..." --weight=1
 
-ynh_use_go
 yunohost service add $app --description="Dendrite Matrix homeserver" --log="/var/log/$app/Monolith.log" --needs_exposed_ports "$tls_port"
 
 #=================================================
