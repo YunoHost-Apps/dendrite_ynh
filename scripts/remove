@@ -7,7 +7,6 @@
 #=================================================
 
 source _common.sh
-source ynh_install_go
 source /usr/share/yunohost/helpers
 
 #=================================================
@@ -60,9 +59,6 @@ ynh_script_progression --message="Removing the PostgreSQL database" --weight=2
 
 # Remove a database if it exists, along with the associated user
 ynh_psql_remove_db --db_user=$db_user --db_name=$db_name
-
-# Remove Go
-ynh_remove_go
 
 #=================================================
 # REMOVE APP MAIN DIR
