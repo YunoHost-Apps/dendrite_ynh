@@ -40,23 +40,27 @@
                 "name": "domain",
                 "type": "domain",
                 "help": {
-                    "en": "Select the domain onto which Dendrite will be exclusively installed. It may be different than the displayed server name.",
-                    "fr": "Sélectionnez le domaine exclusivement dédié à Dendrite. Il peut être différent du nom d'affichage du serveur."
+                    "en": "Select the domain onto which Dendrite will be exclusively installed, e.g. dendrite.domain.tld",
+                    "fr": "Sélectionnez le domaine exclusivement dédié à Dendrite, par exemple dendrite.domain.tld"
                 }
             },
             {
                 "name": "server_name",
                 "type": "domain",
+                "ask": {
+                    "en": "Select the display name for your Dendrite server",
+                    "fr": "Sélectionnez le nom d'affichage pour votre serveur Dendrite"
+                },
                 "help": {
-                    "en": "If your Dendrite domain selected above is a subdomain, you can choose a different display name for your Dendrite server to have your Matrix user-ids looking like @user:domain.org instead of @user:dendrite.domain.org",
-                    "fr": "Si votre domaine pour Dendrite sélectionné précedemment est un sous-domaine, vous pouvez choisir un nom d'affichage pour votre serveur Dendrite afin que vos identifiants Matrix soient @utilisateur:domain.org plutôt que @utilisateur:dendrite.domain.org"
+                    "en": "If you choose domain.tld, your Matrix user-ids will be looking like @user:domain.tld instead of @user:dendrite.domain.tld",
+                    "fr": "Si vous choisissez domain.tld, vos identifiants Matrix ressembleront à @utilisateur:domain.tld plutôt que @utilisateur:dendrite.domain.tld"
                 }
             },
             {
                 "name": "registration",
                 "type": "boolean",
                 "default": false,
-                "help": {
+                "ask": {
                     "en": "Should the server allow any visitor to register as a user?",
                     "fr": "Le serveur doit-il permettre à quiconque de s'enregistrer comme utilisateur?"
                 }
