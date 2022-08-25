@@ -26,6 +26,7 @@ tls_port=$(ynh_app_setting_get --app=$app --key=tls_port)
 db_name=$(ynh_app_setting_get --app=$app --key=db_name)
 db_user=$db_name
 db_pwd=$(ynh_app_setting_get --app=$app --key=psqlpwd)
+registration=$(ynh_app_setting_get --app=$app --key=registration)
 
 #=================================================
 # CHECK VERSION
@@ -56,7 +57,7 @@ ynh_abort_if_errors
 #=================================================
 ynh_script_progression --message="Stopping a systemd service..." --weight=1
 
-ynh_systemd_action --service_name=$app --action="stop" --line_match="Stopped Dendrite Matrix homeserver" --log_path="systemd"
+ynh_systemd_action --service_name=$app --action="stop" --line_match="Stopped external Monolith listener" --log_path="systemd"
 
 #=================================================
 # ENSURE DOWNWARD COMPATIBILITY
@@ -67,11 +68,21 @@ if ! groups $app | grep -q 'ssl-cert'; then
         adduser $app ssl-cert
 fi
 
-
 # Define $server_name if not already defined
 if [ -z $server_name ]; then
    server_name=$domain
    ynh_app_setting_set --app=$app --key=server_name --value=$domain
+fi
+
+# Load up registration variables
+if [[ $registration -eq 1 ]]
+then
+        registration_disabled="false"
+        really_enable_open_registration="--really-enable-open-registration"
+else
+        registration_disabled="true"
+        really_enable_open_registration=""
+        ynh_app_setting_set --app=$app --key=registration --value=0
 fi
 
 #=================================================
@@ -152,13 +163,6 @@ chown -R $app:root "$final_path"
 #=================================================
 ynh_script_progression --message="Updating a configuration file..."
 
-if ynh_permission_has_user --permission=main --user=visitors
-then
-	registration="true"
-else
-	registration="false"
-fi
-
 ynh_add_config --template="../conf/dendrite.yaml" --destination="$final_path/dendrite.yaml"
 
 chmod 400 "$final_path/dendrite.yaml"
@@ -178,8 +182,6 @@ ynh_add_systemd_config
 # SETUP PERMISSIONS
 #=================================================
 ynh_script_progression --message="Configuring permissions..." --weight=1
-
-ynh_permission_update --permission=main --show_tile=false --protected=true
 
 if ! ynh_permission_exists --permission=server_api; then
     ynh_permission_create --permission=server_api --url=$domain/_matrix \
@@ -226,7 +228,7 @@ yunohost service add $app --description="Dendrite Matrix homeserver" --log="/var
 #=================================================
 ynh_script_progression --message="Starting a systemd service..." --weight=1
 
-ynh_systemd_action --service_name=$app --action="start" --line_match="Starting external Monolith listener" --log_path="/var/log/$app/$app.log"
+ynh_systemd_action --service_name=$app --action="start" --line_match="Starting external Monolith listener" --log_path="/var/log/$app/Monolith.log"
 
 #=================================================
 # RELOAD NGINX

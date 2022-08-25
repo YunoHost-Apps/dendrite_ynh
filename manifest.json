@@ -53,9 +53,13 @@
                 }
             },
             {
-                "name": "is_public",
+                "name": "registration",
                 "type": "boolean",
-                "default": false
+                "default": false,
+                "help": {
+                    "en": "Should the server allow any visitor to register as a user?",
+                    "fr": "Le serveur doit-il permettre à quiconque de s'enregistrer comme utilisateur?"
+                }
             }
         ]
     }

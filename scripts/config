@@ -1,0 +1,55 @@
+#!/bin/bash
+
+#=================================================
+# GENERIC STARTING
+#=================================================
+# IMPORT GENERIC HELPERS
+#=================================================
+
+source _common.sh
+source /usr/share/yunohost/helpers
+
+ynh_abort_if_errors
+
+#=================================================
+# RETRIEVE ARGUMENTS
+#=================================================
+
+domain=$(ynh_app_setting_get --app=$app --key=domain)
+server_name=$(ynh_app_setting_get --app=$app --key=server_name)
+path_url=$(ynh_app_setting_get --app=$app --key=path)
+final_path=$(ynh_app_setting_get --app=$app --key=final_path)
+port=$(ynh_app_setting_get --app=$app --key=port)
+tls_port=$(ynh_app_setting_get --app=$app --key=tls_port)
+db_name=$(ynh_app_setting_get --app=$app --key=db_name)
+db_user=$db_name
+db_pwd=$(ynh_app_setting_get --app=$app --key=psqlpwd)
+#registration is not loaded since it's set up by the config panel
+
+#=================================================
+# GENERIC FINALIZATION
+#=================================================
+
+ynh_app_config_apply() {
+    _ynh_app_config_apply
+
+    if [ "${changed[registration]}" == "true" ]
+    then
+        if [ $registration -eq 1 ]
+        then
+            registration_disabled="false"
+            really_enable_open_registration="--really-enable-open-registration"
+        else
+            registration_disabled="true"
+            really_enable_open_registration=""
+        fi
+
+        ynh_add_config --template="../conf/dendrite.yaml" --destination="$final_path/dendrite.yaml"
+        ynh_add_systemd_config
+        ynh_systemd_action --service_name=$app --action="restart" --line_match="Starting external Monolith listener" --log_path="/var/log/$app/$app.log"
+        ynh_app_setting_set --app=$app --key=registration --value=$registration
+
+    fi
+}
+
+ynh_app_config_run $1
