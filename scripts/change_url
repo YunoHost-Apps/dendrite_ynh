@@ -32,6 +32,7 @@ final_path=$(ynh_app_setting_get --app=$app --key=final_path)
 
 # Add settings here as needed by your application
 domain=$YNH_APP_NEW_DOMAIN
+server_name=$(ynh_app_setting_get --app=$app --key=server_name)
 port=$(ynh_app_setting_get --app=$app --key=port)
 tls_port=$(ynh_app_setting_get --app=$app --key=tls_port)
 
@@ -67,6 +68,7 @@ change_path=0
 if [ "$old_path" != "$new_path" ]
 then
 	change_path=1
+	ynh_die --message "The new URL needs to be at the root of a domain."
 fi
 
 #=================================================
@@ -113,9 +115,6 @@ fi
 # SETUP SYSTEMD
 #=================================================
 ynh_script_progression --message="Updating systemd configuration..." --weight=1
-
-# Load the Go environment path
-ynh_use_go
 
 # Create a dedicated systemd config
 ynh_add_systemd_config
