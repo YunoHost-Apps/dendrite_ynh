@@ -22,7 +22,7 @@
     "requirements": {
         "yunohost": ">= 4.3.0"
     },
-    "multi_instance": true,
+    "multi_instance": false,
     "services": [
         "nginx"
     ],
@@ -39,7 +39,7 @@
             {
                 "name": "domain",
                 "type": "domain",
-                "ask": {
+                "help": {
                     "en": "Select the domain onto which Dendrite will be exclusively installed. It may be different than the displayed server name.",
                     "fr": "Sélectionnez le domaine exclusivement dédié à Dendrite. Il peut être différent du nom d'affichage du serveur."
                 }
@@ -47,7 +47,7 @@
             {
                 "name": "server_name",
                 "type": "domain",
-                "ask": {
+                "help": {
                     "en": "If your Dendrite domain selected above is a subdomain, you can choose a different display name for your Dendrite server to have your Matrix user-ids looking like @user:domain.org instead of @user:dendrite.domain.org",
                     "fr": "Si votre domaine pour Dendrite sélectionné précedemment est un sous-domaine, vous pouvez choisir un nom d'affichage pour votre serveur Dendrite afin que vos identifiants Matrix soient @utilisateur:domain.org plutôt que @utilisateur:dendrite.domain.org"
                 }
