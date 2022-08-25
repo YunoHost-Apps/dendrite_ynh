@@ -1,6 +1,7 @@
 ;; Test complet
 	; Manifest
 		domain="domain.tld"
+		server_name="domain.tld"
 		is_public=1
 		port="666"
 	; Checks
