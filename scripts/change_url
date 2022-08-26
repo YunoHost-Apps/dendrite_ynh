@@ -35,6 +35,17 @@ domain=$YNH_APP_NEW_DOMAIN
 server_name=$(ynh_app_setting_get --app=$app --key=server_name)
 port=$(ynh_app_setting_get --app=$app --key=port)
 tls_port=$(ynh_app_setting_get --app=$app --key=tls_port)
+registration=$(ynh_app_setting_get --app=$app --key=registration)
+
+# Load up registration variables
+if [[ $registration -eq 1 ]]
+then
+        registration_disabled="false"
+        really_enable_open_registration="--really-enable-open-registration"
+else
+        registration_disabled="true"
+        really_enable_open_registration=""
+fi
 
 #=================================================
 # BACKUP BEFORE CHANGE URL THEN ACTIVE TRAP
