@@ -6,7 +6,7 @@
         "en": "Matrix homeserver of second generation",
         "fr": "Serveur Matrix de seconde génération"
     },
-    "version": "0.8.5~ynh1",
+    "version": "0.9.5~ynh1",
     "url": "https://matrix.org/",
     "upstream": {
         "license": "Apache-2.0",
@@ -22,7 +22,7 @@
     "requirements": {
         "yunohost": ">= 4.3.0"
     },
-    "multi_instance": true,
+    "multi_instance": false,
     "services": [
         "nginx"
     ],
@@ -38,12 +38,32 @@
             },
             {
                 "name": "domain",
-                "type": "domain"
+                "type": "domain",
+                "help": {
+                    "en": "Select the domain onto which Dendrite will be exclusively installed, e.g. dendrite.domain.tld",
+                    "fr": "Sélectionnez le domaine exclusivement dédié à Dendrite, par exemple dendrite.domain.tld"
+                }
             },
             {
-                "name": "is_public",
+                "name": "server_name",
+                "type": "domain",
+                "ask": {
+                    "en": "Select the display name for your Dendrite server",
+                    "fr": "Sélectionnez le nom d'affichage pour votre serveur Dendrite"
+                },
+                "help": {
+                    "en": "If you choose domain.tld, your Matrix user-ids will be looking like @user:domain.tld instead of @user:dendrite.domain.tld",
+                    "fr": "Si vous choisissez domain.tld, vos identifiants Matrix ressembleront à @utilisateur:domain.tld plutôt que @utilisateur:dendrite.domain.tld"
+                }
+            },
+            {
+                "name": "registration",
                 "type": "boolean",
-                "default": false
+                "default": false,
+                "ask": {
+                    "en": "Should the server allow any visitor to register as a user?",
+                    "fr": "Le serveur doit-il permettre à quiconque de s'enregistrer comme utilisateur?"
+                }
             }
         ]
     }

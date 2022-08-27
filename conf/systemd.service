@@ -7,7 +7,7 @@ Type=simple
 User=__APP__
 Group=__APP__
 WorkingDirectory=__FINALPATH__/
-ExecStart=__FINALPATH__/./bin/dendrite-monolith-server --tls-cert=/etc/yunohost/certs/__DOMAIN__/crt.pem --tls-key=/etc/yunohost/certs/__DOMAIN__/key.pem --config=dendrite.yaml --http-bind-address=:__PORT__ --https-bind-address=:__TLS_PORT__
+ExecStart=__FINALPATH__/bin/dendrite-monolith-server --tls-cert=/etc/yunohost/certs/__DOMAIN__/crt.pem --tls-key=/etc/yunohost/certs/__DOMAIN__/key.pem --config=dendrite.yaml --http-bind-address=:__PORT__ --https-bind-address=:__TLS_PORT__ __REALLY_ENABLE_OPEN_REGISTRATION__
 StandardOutput=append:/var/log/__APP__/__APP__.log
 StandardError=inherit
 

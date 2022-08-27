@@ -7,6 +7,7 @@
 #=================================================
 
 source _common.sh
+source ynh_install_go
 source /usr/share/yunohost/helpers
 
 #=================================================
@@ -31,8 +32,20 @@ final_path=$(ynh_app_setting_get --app=$app --key=final_path)
 
 # Add settings here as needed by your application
 domain=$YNH_APP_NEW_DOMAIN
+server_name=$(ynh_app_setting_get --app=$app --key=server_name)
 port=$(ynh_app_setting_get --app=$app --key=port)
 tls_port=$(ynh_app_setting_get --app=$app --key=tls_port)
+registration=$(ynh_app_setting_get --app=$app --key=registration)
+
+# Load up registration variables
+if [[ $registration -eq 1 ]]
+then
+        registration_disabled="false"
+        really_enable_open_registration="--really-enable-open-registration"
+else
+        registration_disabled="true"
+        really_enable_open_registration=""
+fi
 
 #=================================================
 # BACKUP BEFORE CHANGE URL THEN ACTIVE TRAP
@@ -66,6 +79,7 @@ change_path=0
 if [ "$old_path" != "$new_path" ]
 then
 	change_path=1
+	ynh_die --message "The new URL needs to be at the root of a domain."
 fi
 
 #=================================================
@@ -124,7 +138,7 @@ ynh_add_systemd_config
 ynh_script_progression --message="Starting a systemd service..." --weight=1
 
 # Start a systemd service
-ynh_systemd_action --service_name=$app --action="start" --line_match="Starting external Monolith listener" --log_path="/var/log/$app/$app.log"
+ynh_systemd_action --service_name=$app --action="start" --line_match="Starting external Monolith listener" --log_path="/var/log/$app/Monolith.log"
 
 #=================================================
 # RELOAD NGINX

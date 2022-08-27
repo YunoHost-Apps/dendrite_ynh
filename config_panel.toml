@@ -1,0 +1,12 @@
+version = "1.0"
+
+[main]
+name = "Dendrite configuration"
+
+    [main.registration]
+    name = "User registration"
+
+        [main.registration.registration]
+        ask = "Should registration be enabled?"
+        type = "boolean"
+        default = false

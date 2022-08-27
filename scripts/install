@@ -26,9 +26,20 @@ ynh_abort_if_errors
 
 domain=$YNH_APP_ARG_DOMAIN
 path_url="/"
-is_public=$YNH_APP_ARG_IS_PUBLIC
+server_name=$YNH_APP_ARG_SERVER_NAME
+registration=$YNH_APP_ARG_REGISTRATION
 
 app=$YNH_APP_INSTANCE_NAME
+
+# Allow or deny registration based on is_public
+if [ $registration -eq 1 ]
+then
+	registration_disabled="false"
+	really_enable_open_registration="--really-enable-open-registration"
+else
+	registration_disabled="true"
+	really_enable_open_registration=""
+fi
 
 #=================================================
 # CHECK IF THE APP CAN BE INSTALLED WITH THESE ARGS
@@ -48,6 +59,8 @@ ynh_script_progression --message="Storing installation settings..." --weight=1
 
 ynh_app_setting_set --app=$app --key=domain --value=$domain
 ynh_app_setting_set --app=$app --key=path --value=$path_url
+ynh_app_setting_set --app=$app --key=server_name --value=$server_name
+ynh_app_setting_set --app=$app --key=registration --value=$registration
 
 #=================================================
 # STANDARD MODIFICATIONS
@@ -66,6 +79,15 @@ ynh_app_setting_set --app=$app --key=tls_port --value=$tls_port
 ynh_exec_warn_less yunohost firewall allow TCP $tls_port
 
 #=================================================
+# CREATE DEDICATED USER
+#=================================================
+ynh_script_progression --message="Configuring system user..." --weight=1
+
+# Create a system user
+# It needs to be created before using the ynh_install_go helper
+ynh_system_user_create --username=$app --use_shell --groups="ssl-cert"
+
+#=================================================
 # INSTALL DEPENDENCIES
 #=================================================
 ynh_script_progression --message="Installing dependencies..." --weight=3
@@ -78,8 +100,7 @@ ynh_exec_warn_less ynh_install_app_dependencies $pkg_dependencies
 ynh_script_progression --message="Configuring system user..." --weight=1
 
 # Create a system user
-ynh_system_user_create --username=$app --home_dir="$final_path"
-adduser $app ssl-cert
+ynh_system_user_create --username=$app --home_dir="$final_path" --groups="ssl-cert"
 
 #=================================================
 # CREATE A POSTGRESQL DATABASE
@@ -114,6 +135,12 @@ ynh_script_progression --message="Configuring NGINX web server..." --weight=1
 # Create a dedicated NGINX config
 ynh_add_nginx_config
 
+# Create .well-known redirection for access by federation
+if yunohost --output-as plain domain list | grep -q "^$server_name$"
+then
+    ynh_add_config --template="server_name.conf" --destination="/etc/nginx/conf.d/${server_name}.d/${app}_server_name.conf"
+fi
+
 #=================================================
 # SPECIFIC SETUP
 #=================================================
@@ -129,7 +156,6 @@ pushd "$final_path/build"
 	export GOPATH="$final_path/build/go"
 	export GOCACHE="$final_path/build/.cache"
 	CGO_ENABLED=1 go build -trimpath -v -o "$final_path/bin/" ./cmd/dendrite-monolith-server > /dev/null 2>&1
-	CGO_ENABLED=1 go build -trimpath -v -o "$final_path/bin/" ./cmd/goose > /dev/null 2>&1
 	CGO_ENABLED=1 go build -trimpath -v -o "$final_path/bin/" ./cmd/create-account > /dev/null 2>&1
 	CGO_ENABLED=1 go build -trimpath -v -o "$final_path/bin/" ./cmd/generate-keys > /dev/null 2>&1
 popd
@@ -154,13 +180,6 @@ chown -R $app:root "$final_path"
 #=================================================
 ynh_script_progression --message="Adding a configuration file..."
 
-# Allow or deny registration based of is_public
-registration=false
-if [ $is_public -eq 1 ]
-then
-	registration=true
-fi
-
 # Copy and modify the config file
 ynh_add_config --template="../conf/dendrite.yaml" --destination="$final_path/dendrite.yaml"
 
@@ -177,6 +196,22 @@ ynh_add_systemd_config
 
 #=================================================
 # GENERIC FINALIZATION
+#=================================================
+# SETUP PERMISSIONS
+#=================================================
+ynh_script_progression --message="Configuring permissions..." --weight=1
+
+ynh_permission_update --permission=main --show_tile=false
+
+ynh_permission_create --permission=server_api --url=$domain/_matrix \
+                      --label="Server access for client apps." --show_tile=false --allowed=visitors \
+                      --auth_header=false --protected=true
+if yunohost --output-as plain domain list | grep -q "^$server_name$"; then
+    ynh_permission_create --permission=server_client_infos --url=$server_name/.well-known/matrix \
+                          --label="Server info for clients. (well-known)" --show_tile=false --allowed=visitors \
+                          --auth_header=false --protected=true
+fi
+
 #=================================================
 # SETUP LOGROTATE
 #=================================================
@@ -204,7 +239,7 @@ yunohost service add $app --description="Dendrite Matrix homeserver" --log="/var
 ynh_script_progression --message="Starting a systemd service..." --weight=1
 
 # Start a systemd service
-ynh_systemd_action --service_name=$app --action="start" --line_match="Starting external Monolith listener" --log_path="/var/log/$app/$app.log"
+ynh_systemd_action --service_name=$app --action="start" --line_match="Starting external Monolith listener" --log_path="/var/log/$app/Monolith.log"
 
 #=================================================
 # RELOAD NGINX
