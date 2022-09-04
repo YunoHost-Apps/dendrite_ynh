@@ -33,7 +33,7 @@ version: 2
 # Global Matrix configuration. This configuration applies to all components.
 global:
   # The domain name of this homeserver.
-  server_name: __DOMAIN__
+  server_name: __SERVER_NAME__
 
   # The path to the signing private key file, used to sign requests and events.
   # Note that this is NOT the same private key as used for TLS! To generate a

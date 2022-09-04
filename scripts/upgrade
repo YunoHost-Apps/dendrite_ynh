@@ -57,7 +57,7 @@ ynh_abort_if_errors
 #=================================================
 ynh_script_progression --message="Stopping a systemd service..." --weight=1
 
-ynh_systemd_action --service_name=$app --action="stop" --line_match="Stopped external Monolith listener" --log_path="systemd"
+ynh_systemd_action --service_name=$app --action="stop" --line_match="Stopped external Monolith listener" --log_path="/var/log/$app/Monolith.log"
 
 #=================================================
 # ENSURE DOWNWARD COMPATIBILITY
