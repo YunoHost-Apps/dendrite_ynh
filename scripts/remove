@@ -55,7 +55,7 @@ ynh_remove_logrotate
 #=================================================
 # REMOVE THE POSTGRESQL DATABASE
 #=================================================
-ynh_script_progression --message="Removing the PostgreSQL database" --weight=2
+ynh_script_progression --message="Removing the PostgreSQL database..." --weight=2
 
 # Remove a database if it exists, along with the associated user
 ynh_psql_remove_db --db_user=$db_user --db_name=$db_name
@@ -90,8 +90,8 @@ ynh_remove_app_dependencies
 
 if yunohost firewall list | grep -q "\- $tls_port$"
 then
-        ynh_script_progression --message="Closing port $tls_port..." --weight=1
-        ynh_exec_warn_less yunohost firewall disallow TCP $tls_port
+	ynh_script_progression --message="Closing port $tls_port..." --weight=1
+	ynh_exec_warn_less yunohost firewall disallow TCP $tls_port
 fi
 
 #=================================================

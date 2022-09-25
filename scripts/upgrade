@@ -31,7 +31,7 @@ registration=$(ynh_app_setting_get --app=$app --key=registration)
 #=================================================
 # CHECK VERSION
 #=================================================
-ynh_script_progression --message="Checking version..."
+ynh_script_progression --message="Checking version..." --weight=1
 
 upgrade_type=$(ynh_check_app_version_changed)
 
@@ -43,7 +43,6 @@ ynh_script_progression --message="Backing up the app before upgrading (may take 
 # Backup the current version of the app
 ynh_backup_before_upgrade
 ynh_clean_setup () {
-	ynh_clean_check_starting
 	# Restore it if the upgrade fails
 	ynh_restore_upgradebackup
 }
@@ -85,6 +84,28 @@ else
         ynh_app_setting_set --app=$app --key=registration --value=0
 fi
 
+if ! ynh_permission_exists --permission=server_api; then
+    ynh_permission_create --permission=server_api --url=$domain/_matrix \
+                          --label="Server access for client apps." --show_tile=false --allowed=visitors \
+                          --auth_header=false --protected=true
+else
+    ynh_permission_url --permission=server_api --url=$domain/_matrix --remove_url=$server_name/.well-known/matrix \
+                       --auth_header=false
+    ynh_permission_update --permission=server_api --label="Server access for client apps." --show_tile=false \
+                          --protected=true
+fi
+
+if yunohost --output-as plain domain list | grep -q "^$server_name"'$' && ! ynh_permission_exists --permission=server_client_infos; then
+    ynh_permission_create --permission=server_client_infos --url=$server_name/.well-known/matrix \
+                          --label="Server info for clients. (well-known)" --show_tile=false --allowed=visitors \
+                          --auth_header=false --protected=true
+elif yunohost --output-as plain domain list | grep -q "^$server_name"'$'; then
+    ynh_permission_url --permission=server_client_infos --url=$server_name/.well-known/matrix \
+                       --auth_header=false
+    ynh_permission_update --permission=server_client_infos --label="Server info for clients. (well-known)" --show_tile=false \
+                          --protected=true
+fi
+
 #=================================================
 # CREATE DEDICATED USER
 #=================================================
@@ -110,6 +131,13 @@ chmod -R o-rwx "$final_path"
 chown -R $app:root "$final_path"
 
 #=================================================
+# UPGRADE DEPENDENCIES
+#=================================================
+ynh_script_progression --message="Upgrading dependencies..." --weight=1
+
+ynh_exec_warn_less ynh_install_app_dependencies "$pkg_dependencies"
+
+#=================================================
 # NGINX CONFIGURATION
 #=================================================
 ynh_script_progression --message="Upgrading NGINX web server configuration..." --weight=1
@@ -122,13 +150,6 @@ if yunohost --output-as plain domain list | grep -q "^$server_name$"
 then
     ynh_add_config --template="server_name.conf" --destination="/etc/nginx/conf.d/${server_name}.d/${app}_server_name.conf"
 fi
-
-#=================================================
-# CREATE DEDICATED USER
-#=================================================
-ynh_script_progression --message="Upgrading dependencies..." --weight=1
-
-ynh_exec_warn_less ynh_install_app_dependencies "$pkg_dependencies"
 
 #=================================================
 # SPECIFIC UPGRADE
@@ -178,33 +199,6 @@ ynh_add_systemd_config
 
 #=================================================
 # GENERIC FINALIZATION
-#=================================================
-# SETUP PERMISSIONS
-#=================================================
-ynh_script_progression --message="Configuring permissions..." --weight=1
-
-if ! ynh_permission_exists --permission=server_api; then
-    ynh_permission_create --permission=server_api --url=$domain/_matrix \
-                          --label="Server access for client apps." --show_tile=false --allowed=visitors \
-                          --auth_header=false --protected=true
-else
-    ynh_permission_url --permission=server_api --url=$domain/_matrix --remove_url=$server_name/.well-known/matrix \
-                       --auth_header=false
-    ynh_permission_update --permission=server_api --label="Server access for client apps." --show_tile=false \
-                          --protected=true
-fi
-
-if yunohost --output-as plain domain list | grep -q "^$server_name"'$' && ! ynh_permission_exists --permission=server_client_infos; then
-    ynh_permission_create --permission=server_client_infos --url=$server_name/.well-known/matrix \
-                          --label="Server info for clients. (well-known)" --show_tile=false --allowed=visitors \
-                          --auth_header=false --protected=true
-elif yunohost --output-as plain domain list | grep -q "^$server_name"'$'; then
-    ynh_permission_url --permission=server_client_infos --url=$server_name/.well-known/matrix \
-                       --auth_header=false
-    ynh_permission_update --permission=server_client_infos --label="Server info for clients. (well-known)" --show_tile=false \
-                          --protected=true
-fi
-
 #=================================================
 # SETUP LOGROTATE
 #=================================================

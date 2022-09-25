@@ -63,19 +63,19 @@ ynh_backup --src_path="/etc/logrotate.d/$app"
 
 ynh_backup --src_path="/etc/systemd/system/$app.service"
 
+#=================================================
+# BACKUP VARIOUS FILES
+#=================================================
+
 if yunohost --output-as plain domain list | grep -q "^$server_name$"
 then
     ynh_backup --src_path="/etc/nginx/conf.d/${server_name}.d/${app}_server_name.conf"
 fi
 
 #=================================================
-# BACKUP VARIOUS FILES
+# BACKUP THE POSTGRESQL DATABASE
 #=================================================
-
-#=================================================
-# BACKUP THE PSQL DATABASE
-#=================================================
-ynh_print_info --message="Backing up the PSQL database..."
+ynh_print_info --message="Backing up the PostgreSQL database..."
 
 ynh_psql_dump_db --database="$db_name" > db.sql
 
