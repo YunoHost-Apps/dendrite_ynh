@@ -15,7 +15,7 @@ source /usr/share/yunohost/helpers
 #=================================================
 
 ynh_clean_setup () {
-	ynh_clean_check_starting
+	true
 }
 # Exit if an error occurs during the execution of the script
 ynh_abort_if_errors
@@ -77,15 +77,6 @@ ynh_app_setting_set --app=$app --key=tls_port --value=$tls_port
 
 # Open TLS port
 ynh_exec_warn_less yunohost firewall allow TCP $tls_port
-
-#=================================================
-# CREATE DEDICATED USER
-#=================================================
-ynh_script_progression --message="Configuring system user..." --weight=1
-
-# Create a system user
-# It needs to be created before using the ynh_install_go helper
-ynh_system_user_create --username=$app --use_shell --groups="ssl-cert"
 
 #=================================================
 # INSTALL DEPENDENCIES
@@ -197,22 +188,6 @@ ynh_add_systemd_config
 #=================================================
 # GENERIC FINALIZATION
 #=================================================
-# SETUP PERMISSIONS
-#=================================================
-ynh_script_progression --message="Configuring permissions..." --weight=1
-
-ynh_permission_update --permission=main --show_tile=false
-
-ynh_permission_create --permission=server_api --url=$domain/_matrix \
-                      --label="Server access for client apps." --show_tile=false --allowed=visitors \
-                      --auth_header=false --protected=true
-if yunohost --output-as plain domain list | grep -q "^$server_name$"; then
-    ynh_permission_create --permission=server_client_infos --url=$server_name/.well-known/matrix \
-                          --label="Server info for clients. (well-known)" --show_tile=false --allowed=visitors \
-                          --auth_header=false --protected=true
-fi
-
-#=================================================
 # SETUP LOGROTATE
 #=================================================
 ynh_script_progression --message="Configuring log rotation..." --weight=1
@@ -240,6 +215,22 @@ ynh_script_progression --message="Starting a systemd service..." --weight=1
 
 # Start a systemd service
 ynh_systemd_action --service_name=$app --action="start" --line_match="Starting external Monolith listener" --log_path="/var/log/$app/Monolith.log"
+
+#=================================================
+# SETUP SSOWAT
+#=================================================
+ynh_script_progression --message="Configuring permissions..." --weight=1
+
+ynh_permission_update --permission=main --show_tile=false
+
+ynh_permission_create --permission=server_api --url=$domain/_matrix \
+                      --label="Server access for client apps." --show_tile=false --allowed=visitors \
+                      --auth_header=false --protected=true
+if yunohost --output-as plain domain list | grep -q "^$server_name$"; then
+    ynh_permission_create --permission=server_client_infos --url=$server_name/.well-known/matrix \
+                          --label="Server info for clients. (well-known)" --show_tile=false --allowed=visitors \
+                          --auth_header=false --protected=true
+fi
 
 #=================================================
 # RELOAD NGINX
