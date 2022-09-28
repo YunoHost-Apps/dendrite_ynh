@@ -326,7 +326,7 @@ sync_api:
   # This option controls which HTTP header to inspect to find the real remote IP
   # address of the client. This is likely required if Dendrite is running behind
   # a reverse proxy server.
-  # real_ip_header: X-Real-IP
+  real_ip_header: X-Real-IP
 
 # Configuration for the User API.
 user_api:
