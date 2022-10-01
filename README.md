@@ -24,7 +24,7 @@ Dendrite is a second-generation Matrix homeserver written in Go. It intends to p
 - Scalable: can run on multiple machines and eventually scale to massive homeserver deployments.
 
 
-**Shipped version:** 0.9.9~ynh3
+**Shipped version:** 0.10.1~ynh1 *(:warning: This is the `testing` branch. The [`master` branch](https://github.com/YunoHost-Apps/dendrite_ynh/tree/master) used in the catalog is currently on version 0.9.9\~ynh3.)*
 
 ## Disclaimers / important information
 
@@ -37,6 +37,10 @@ Dendrite is a second-generation Matrix homeserver written in Go. It intends to p
 ## Limitations
 
 * Dendrite does not implement secondary user registration schemes yet, so YunoHost users cannot be integrated at the moment.
+
+## :red_circle: Antifeatures
+
+- **Alpha software**: Early development stage. May contain changing or unstable features, bugs, and security vulnerability.
 
 ## Documentation and resources
 
