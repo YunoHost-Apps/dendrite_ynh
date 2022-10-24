@@ -37,7 +37,7 @@ global:
   # you must configure the "database" block for each component instead.
   database:
     connection_string: postgres://__DB_USER__:__DB_PWD__@localhost/__DB_NAME__?sslmode=disable
-    max_open_conns: 100
+    max_open_conns: 80
     max_idle_conns: 5
     conn_max_lifetime: -1
 
