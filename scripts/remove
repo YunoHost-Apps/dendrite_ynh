@@ -22,6 +22,7 @@ tls_port=$(ynh_app_setting_get --app=$app --key=tls_port)
 db_name=$(ynh_app_setting_get --app=$app --key=db_name)
 db_user=$db_name
 final_path=$(ynh_app_setting_get --app=$app --key=final_path)
+server_name=$(ynh_app_setting_get --app=$app --key=server_name)
 
 #=================================================
 # STANDARD REMOVE
@@ -72,6 +73,9 @@ ynh_secure_remove --file="$final_path"
 # REMOVE NGINX CONFIGURATION
 #=================================================
 ynh_script_progression --message="Removing NGINX web server configuration..." --weight=1
+
+# Remove the well-known location
+ynh_secure_remove --file="/etc/nginx/conf.d/${server_name}.d/${app}_server_name.conf"
 
 # Remove the dedicated NGINX config
 ynh_remove_nginx_config
