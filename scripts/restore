@@ -68,6 +68,14 @@ chown -R $app:root "$final_path"
 #=================================================
 # SPECIFIC RESTORATION
 #=================================================
+# FIND AND OPEN A PORT
+#=================================================
+ynh_script_progression --message="Configuring firewall..." --weight=1
+
+# Open TLS port
+ynh_exec_warn_less yunohost firewall allow TCP $tls_port
+
+#=================================================
 # REINSTALL DEPENDENCIES
 #=================================================
 ynh_script_progression --message="Reinstalling dependencies..." --weight=3
