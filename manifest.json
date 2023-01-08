@@ -6,7 +6,7 @@
         "en": "Matrix homeserver of second generation",
         "fr": "Serveur Matrix de seconde génération"
     },
-    "version": "0.10.8~ynh1",
+    "version": "0.10.8~ynh2",
     "url": "https://matrix.org/",
     "upstream": {
         "license": "Apache-2.0",
