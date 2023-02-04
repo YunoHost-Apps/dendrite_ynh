@@ -8,6 +8,7 @@
 pkg_dependencies="postgresql postgresql-contrib"
 
 GO_VERSION="1.18"
+psql_version=$PSQL_VERSION
 
 #=================================================
 # PERSONAL HELPERS
