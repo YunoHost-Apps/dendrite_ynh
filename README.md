@@ -6,6 +6,7 @@ It shall NOT be edited by hand.
 # Dendrite for YunoHost
 
 [![Integration level](https://dash.yunohost.org/integration/dendrite.svg)](https://dash.yunohost.org/appci/app/dendrite) ![Working status](https://ci-apps.yunohost.org/ci/badges/dendrite.status.svg) ![Maintenance status](https://ci-apps.yunohost.org/ci/badges/dendrite.maintain.svg)
+
 [![Install Dendrite with YunoHost](https://install-app.yunohost.org/install-with-yunohost.svg)](https://install-app.yunohost.org/?app=dendrite)
 
 *[Lire ce readme en français.](./README_fr.md)*
