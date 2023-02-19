@@ -1,5 +1,5 @@
-SOURCE_URL=https://api.github.com/repos/matrix-org/dendrite/tarball/v0.10.8
-SOURCE_SUM=ed5815b98e8e1a7d009e04d3893789b3873c22a1067279dcf03f0eaf502ac667
+SOURCE_URL=https://api.github.com/repos/matrix-org/dendrite/tarball/v0.11.1
+SOURCE_SUM=caf5df07a1dce5dbaa3133c939a8622893529d2f5dfd6b2a14ec97f7a4ec00f4
 SOURCE_SUM_PRG=sha256sum
 SOURCE_FORMAT=tar.gz
 SOURCE_IN_SUBDIR=true
