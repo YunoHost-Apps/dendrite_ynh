@@ -33,7 +33,7 @@
                 "type": "display_text",
                 "ask": {
                     "en": "Dendrite is still in beta phase.\nIt is functional, but all Matrix features are yet to be implemented.\nSee the upstream repo for more information: https://github.com/matrix-org/dendrite\n\nThis package est encore en development, all features from Matrix/Synapse are yet to be implemented.",
-                    "fr": "Dendrite est encore en phase bêta.\nElle est fonctionnelle, mais n'implémente pas encore toutes les fonctionnalités de Matrix.\nConsultez le dépôt source pour plus d'information: https://github.com/matrix-org/dendrite\n\nCe package est encore en développement, toutes les fonctionalités de Matrix/Synapse ne sont pas encore implémentées."
+                    "fr": "Dendrite est encore en phase bêta.\nElle est fonctionnelle, mais n'implémente pas encore toutes les fonctionnalités de Matrix.\nConsultez le dépôt source pour plus d'information : https://github.com/matrix-org/dendrite\n\nCe package est encore en développement, toutes les fonctionalités de Matrix/Synapse ne sont pas encore implémentées."
                 }
             },
             {
@@ -62,7 +62,7 @@
                 "default": false,
                 "ask": {
                     "en": "Should the server allow any visitor to register as a user?",
-                    "fr": "Le serveur doit-il permettre à quiconque de s'enregistrer comme utilisateur?"
+                    "fr": "Le serveur doit-il permettre à quiconque de s'enregistrer comme utilisateur ?"
                 }
             }
         ]
