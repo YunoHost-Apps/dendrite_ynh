@@ -6,6 +6,7 @@ It shall NOT be edited by hand.
 # Dendrite pour YunoHost
 
 [![Niveau d’intégration](https://dash.yunohost.org/integration/dendrite.svg)](https://dash.yunohost.org/appci/app/dendrite) ![Statut du fonctionnement](https://ci-apps.yunohost.org/ci/badges/dendrite.status.svg) ![Statut de maintenance](https://ci-apps.yunohost.org/ci/badges/dendrite.maintain.svg)
+
 [![Installer Dendrite avec YunoHost](https://install-app.yunohost.org/install-with-yunohost.svg)](https://install-app.yunohost.org/?app=dendrite)
 
 *[Read this readme in english.](./README.md)*
@@ -24,7 +25,7 @@ Dendrite is a second-generation Matrix homeserver written in Go. It intends to p
 - Scalable: can run on multiple machines and eventually scale to massive homeserver deployments.
 
 
-**Version incluse :** 0.10.8~ynh2
+**Version incluse :** 0.11.1~ynh1
 ## Avertissements / informations importantes
 
 :warning: The upstream app is still in beta. Tread carefully.

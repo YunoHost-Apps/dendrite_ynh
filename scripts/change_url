@@ -127,8 +127,6 @@ fi
 #=================================================
 ynh_script_progression --message="Updating systemd configuration..." --weight=1
 
-psql_version=$PSQL_VERSION
-
 # Create a dedicated systemd config
 ynh_add_systemd_config
 

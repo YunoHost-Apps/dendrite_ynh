@@ -194,8 +194,6 @@ chown $app:$app "$final_path/dendrite.yaml"
 #=================================================
 ynh_script_progression --message="Upgrading systemd configuration..." --weight=1
 
-psql_version=$PSQL_VERSION
-
 # Create a dedicated systemd config
 ynh_add_systemd_config
 
