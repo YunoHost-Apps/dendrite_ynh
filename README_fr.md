@@ -5,15 +5,15 @@ It shall NOT be edited by hand.
 
 # Dendrite pour YunoHost
 
-[![Niveau d'intégration](https://dash.yunohost.org/integration/dendrite.svg)](https://dash.yunohost.org/appci/app/dendrite) ![Statut du fonctionnement](https://ci-apps.yunohost.org/ci/badges/dendrite.status.svg) ![Statut de maintenance](https://ci-apps.yunohost.org/ci/badges/dendrite.maintain.svg)  
+[![Niveau d’intégration](https://dash.yunohost.org/integration/dendrite.svg)](https://dash.yunohost.org/appci/app/dendrite) ![Statut du fonctionnement](https://ci-apps.yunohost.org/ci/badges/dendrite.status.svg) ![Statut de maintenance](https://ci-apps.yunohost.org/ci/badges/dendrite.maintain.svg)
 [![Installer Dendrite avec YunoHost](https://install-app.yunohost.org/install-with-yunohost.svg)](https://install-app.yunohost.org/?app=dendrite)
 
 *[Read this readme in english.](./README.md)*
 
-> *Ce package vous permet d'installer Dendrite rapidement et simplement sur un serveur YunoHost.
-Si vous n'avez pas YunoHost, regardez [ici](https://yunohost.org/#/install) pour savoir comment l'installer et en profiter.*
+> *Ce package vous permet d’installer Dendrite rapidement et simplement sur un serveur YunoHost.
+Si vous n’avez pas YunoHost, regardez [ici](https://yunohost.org/#/install) pour savoir comment l’installer et en profiter.*
 
-## Vue d'ensemble
+## Vue d’ensemble
 
 Dendrite is a second-generation Matrix homeserver written in Go. It intends to provide an efficient, reliable and scalable alternative to Synapse:
 
@@ -24,7 +24,7 @@ Dendrite is a second-generation Matrix homeserver written in Go. It intends to p
 - Scalable: can run on multiple machines and eventually scale to massive homeserver deployments.
 
 
-**Version incluse :** 0.10.8~ynh2
+**Version incluse :** 0.11.1~ynh1
 ## Avertissements / informations importantes
 
 :warning: The upstream app is still in beta. Tread carefully.
@@ -43,9 +43,9 @@ Dendrite is a second-generation Matrix homeserver written in Go. It intends to p
 
 ## Documentations et ressources
 
-* Site officiel de l'app : <https://matrix.org/>
-* Documentation officielle de l'admin : <https://github.com/matrix-org/dendrite/tree/master/docs>
-* Dépôt de code officiel de l'app : <https://github.com/matrix-org/dendrite>
+* Site officiel de l’app : <https://matrix.org/>
+* Documentation officielle de l’admin : <https://github.com/matrix-org/dendrite/tree/master/docs>
+* Dépôt de code officiel de l’app : <https://github.com/matrix-org/dendrite>
 * Documentation YunoHost pour cette app : <https://yunohost.org/app_dendrite>
 * Signaler un bug : <https://github.com/YunoHost-Apps/dendrite_ynh/issues>
 
@@ -61,4 +61,4 @@ ou
 sudo yunohost app upgrade dendrite -u https://github.com/YunoHost-Apps/dendrite_ynh/tree/testing --debug
 ```
 
-**Plus d'infos sur le packaging d'applications :** <https://yunohost.org/packaging_apps>
+**Plus d’infos sur le packaging d’applications :** <https://yunohost.org/packaging_apps>
