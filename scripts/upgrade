@@ -27,6 +27,7 @@ db_name=$(ynh_app_setting_get --app=$app --key=db_name)
 db_user=$db_name
 db_pwd=$(ynh_app_setting_get --app=$app --key=psqlpwd)
 registration=$(ynh_app_setting_get --app=$app --key=registration)
+psql_version=$PSQL_VERSION
 
 #=================================================
 # CHECK VERSION
@@ -71,6 +72,12 @@ fi
 if [ -z $server_name ]; then
    server_name=$domain
    ynh_app_setting_set --app=$app --key=server_name --value=$domain
+fi
+
+# Define $server_name if not already defined
+if [ -z $psql_version ]; then
+   psql_version=$PSQL_VERSION
+   ynh_app_setting_set --app=$app --key=psql_version --value=$psql_version
 fi
 
 # Load up registration variables
@@ -193,8 +200,6 @@ chown $app:$app "$final_path/dendrite.yaml"
 # SETUP SYSTEMD
 #=================================================
 ynh_script_progression --message="Upgrading systemd configuration..." --weight=1
-
-psql_version=$PSQL_VERSION
 
 # Create a dedicated systemd config
 ynh_add_systemd_config
