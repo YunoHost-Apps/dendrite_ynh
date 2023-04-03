@@ -72,7 +72,7 @@ ynh_use_go () {
     ynh_go_load_path="PATH=$PATH"
 
     # Sets the local application-specific Go version
-    pushd $final_path
+    pushd $install_dir
         $goenv_install_dir/bin/goenv local $go_version
     popd
 }

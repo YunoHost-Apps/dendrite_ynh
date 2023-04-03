@@ -7,7 +7,7 @@ Type=simple
 User=__APP__
 Group=__APP__
 WorkingDirectory=__INSTALL_DIR__/
-ExecStart=__INSTALL_DIR__/bin/dendrite-monolith-server --tls-cert=/etc/yunohost/certs/__DOMAIN__/crt.pem --tls-key=/etc/yunohost/certs/__DOMAIN__/key.pem --config=dendrite.yaml --http-bind-address=:__PORT__ --https-bind-address=:__TLS_PORT__ __REALLY_ENABLE_OPEN_REGISTRATION__
+ExecStart=__INSTALL_DIR__/bin/dendrite-monolith-server --tls-cert=/etc/yunohost/certs/__DOMAIN__/crt.pem --tls-key=/etc/yunohost/certs/__DOMAIN__/key.pem --config=dendrite.yaml --http-bind-address=:__PORT__ --https-bind-address=:__PORT_TLS__ __REALLY_ENABLE_OPEN_REGISTRATION__
 StandardOutput=journal
 StandardError=inherit
 LimitNOFILE=65535
