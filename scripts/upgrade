@@ -145,7 +145,7 @@ ynh_use_logrotate --non-append
 #=================================================
 ynh_script_progression --message="Integrating service in YunoHost..." --weight=1
 
-yunohost service add $app --description="Dendrite Matrix homeserver" --log="/var/log/$app/Monolith.log" --needs_exposed_ports "$tls_port"
+yunohost service add $app --description="Dendrite Matrix homeserver" --log="/var/log/$app/Monolith.log" --needs_exposed_ports "$port_tls"
 
 #=================================================
 # START SYSTEMD SERVICE
