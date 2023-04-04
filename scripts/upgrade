@@ -56,7 +56,7 @@ ynh_abort_if_errors
 #=================================================
 ynh_script_progression --message="Stopping a systemd service..." --weight=1
 
-ynh_systemd_action --service_name=$app --action="stop" --line_match="Dendrite is exiting now" --log_path="/var/log/$app/Monolith.log"
+ynh_systemd_action --service_name=$app --action="stop" --line_match="Dendrite is exiting now" --log_path="systemd"
 
 #=================================================
 # ENSURE DOWNWARD COMPATIBILITY
@@ -222,7 +222,7 @@ yunohost service add $app --description="Dendrite Matrix homeserver" --log="/var
 #=================================================
 ynh_script_progression --message="Starting a systemd service..." --weight=1
 
-ynh_systemd_action --service_name=$app --action="start" --line_match="Starting external Monolith listener" --log_path="/var/log/$app/Monolith.log"
+ynh_systemd_action --service_name=$app --action="start" --line_match="Cleaning old notifications" --log_path="systemd"
 
 #=================================================
 # RELOAD NGINX
