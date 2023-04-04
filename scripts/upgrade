@@ -98,7 +98,7 @@ then
 		ynh_use_go
 		export GOPATH="$install_dir/build/go"
 		export GOCACHE="$install_dir/build/.cache"
-		CGO_ENABLED=1 go build -trimpath -v -o "$install_dir/bin/" ./cmd/dendrite-monolith-server > /dev/null 2>&1
+		CGO_ENABLED=1 go build -trimpath -v -o "$install_dir/bin/" ./cmd/dendrite > /dev/null 2>&1
 		CGO_ENABLED=1 go build -trimpath -v -o "$install_dir/bin/" ./cmd/create-account > /dev/null 2>&1
 		CGO_ENABLED=1 go build -trimpath -v -o "$install_dir/bin/" ./cmd/generate-keys > /dev/null 2>&1
 	popd
