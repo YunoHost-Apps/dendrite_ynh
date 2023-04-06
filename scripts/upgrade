@@ -56,7 +56,7 @@ ynh_abort_if_errors
 #=================================================
 ynh_script_progression --message="Stopping a systemd service..." --weight=1
 
-ynh_systemd_action --service_name=$app --action="stop" --line_match="Dendrite is exiting now" --log_path="/var/log/$app/Monolith.log"
+ynh_systemd_action --service_name=$app --action="stop" --line_match="Dendrite is exiting now" --log_path="systemd"
 
 #=================================================
 # ENSURE DOWNWARD COMPATIBILITY
@@ -168,7 +168,7 @@ then
 		ynh_use_go
 		export GOPATH="$final_path/build/go"
 		export GOCACHE="$final_path/build/.cache"
-		CGO_ENABLED=1 go build -trimpath -v -o "$final_path/bin/" ./cmd/dendrite-monolith-server > /dev/null 2>&1
+		CGO_ENABLED=1 go build -trimpath -v -o "$final_path/bin/" ./cmd/dendrite > /dev/null 2>&1
 		CGO_ENABLED=1 go build -trimpath -v -o "$final_path/bin/" ./cmd/create-account > /dev/null 2>&1
 		CGO_ENABLED=1 go build -trimpath -v -o "$final_path/bin/" ./cmd/generate-keys > /dev/null 2>&1
 	popd
@@ -215,14 +215,14 @@ ynh_use_logrotate --non-append
 #=================================================
 ynh_script_progression --message="Integrating service in YunoHost..." --weight=1
 
-yunohost service add $app --description="Dendrite Matrix homeserver" --log="/var/log/$app/Monolith.log" --needs_exposed_ports "$tls_port"
+yunohost service add $app --description="Dendrite Matrix homeserver" --log="/var/log/$app/$app.log" --needs_exposed_ports "$tls_port"
 
 #=================================================
 # START SYSTEMD SERVICE
 #=================================================
 ynh_script_progression --message="Starting a systemd service..." --weight=1
 
-ynh_systemd_action --service_name=$app --action="start" --line_match="Starting external Monolith listener" --log_path="/var/log/$app/Monolith.log"
+ynh_systemd_action --service_name=$app --action="start" --line_match="Cleaning old notifications" --log_path="systemd"
 
 #=================================================
 # RELOAD NGINX
