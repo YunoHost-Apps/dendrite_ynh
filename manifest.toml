@@ -16,7 +16,7 @@ admindoc = "https://github.com/matrix-org/dendrite/tree/master/docs"
 code = "https://github.com/matrix-org/dendrite"
 
 [integration]
-yunohost = ">= 11.1.16"
+yunohost = ">= 11.1.17"
 architectures = "all"
 multi_instance = false
 ldap = "not_relevant"
