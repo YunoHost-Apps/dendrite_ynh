@@ -26,10 +26,6 @@ ram.build = "50M"
 ram.runtime = "50M"
 
 [install]
-    [install.warning]
-    ask.en = "Dendrite is still in beta phase.\nIt is functional, but all Matrix features are yet to be implemented.\nSee the upstream repo for more information: https://github.com/matrix-org/dendrite\n\nThis package est encore en development, all features from Matrix/Synapse are yet to be implemented."
-    ask.fr = "Dendrite est encore en phase bêta.\nElle est fonctionnelle, mais n'implémente pas encore toutes les fonctionnalités de Matrix.\nConsultez le dépôt source pour plus d'information : https://github.com/matrix-org/dendrite\n\nCe package est encore en développement, toutes les fonctionalités de Matrix/Synapse ne sont pas encore implémentées."
-    type = "display_text"
 
     [install.domain]
     help.en = "Select the domain onto which Dendrite will be exclusively installed, e.g. dendrite.domain.tld"
