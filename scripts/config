@@ -29,7 +29,7 @@ ynh_app_config_apply() {
 
         ynh_add_config --template="../conf/dendrite.yaml" --destination="$install_dir/dendrite.yaml"
         ynh_add_systemd_config
-        ynh_systemd_action --service_name=$app --action="restart" --line_match="Cleaning old notifications" --log_path="systemd"
+        ynh_systemd_action --service_name=$app --action="restart" --line_match="Starting external listener" --log_path="systemd"
         ynh_app_setting_set --app=$app --key=registration --value=$registration
 
     fi

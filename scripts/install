@@ -32,6 +32,12 @@ ynh_app_setting_set --app=$app --key=server_name --value=$server_name
 ynh_app_setting_set --app=$app --key=registration --value=$registration
 
 #=================================================
+# ADD USER TO THE SSL-CERT GROUP
+#=================================================
+
+usermod -a -G ssl-cert $app
+
+#=================================================
 # CREATE A POSTGRESQL DATABASE
 #=================================================
 ynh_script_progression --message="Creating a PostgreSQL database..." --weight=2
@@ -145,7 +151,7 @@ yunohost service add $app --description="Dendrite Matrix homeserver" --log="/var
 ynh_script_progression --message="Starting a systemd service..." --weight=1
 
 # Start a systemd service
-ynh_systemd_action --service_name=$app --action="start" --line_match="Cleaning old notifications" --log_path="systemd"
+ynh_systemd_action --service_name=$app --action="start" --line_match="Starting external listener" --log_path="systemd"
 
 #=================================================
 # END OF SCRIPT
