@@ -65,14 +65,14 @@ ram.runtime = "50M"
     [resources.permissions]
     main.url = "/"
     main.show_tile = false
-    server_api.url = "__DOMAIN__/_matrix "
+    server_api.url = "__DOMAIN__/_matrix"
     server_api.label = "Server access for client apps."
     server_api.show_tile = false
     server_api.allowed = "visitors"
     server_api.auth_header = false
     server_api.protected = true
 
-    server_client_infos.url = "__SERVER_NAME__/.well-known/matrix "
+    server_client_infos.url = "__SERVER_NAME__/.well-known/matrix"
     server_client_infos.label = "Server info for clients. (well-known)"
     server_client_infos.show_tile = false
     server_client_infos.allowed = "visitors"
