@@ -1,0 +1,19 @@
+test_format = 1.0
+
+[default]
+
+    # -------------------------------
+    # Default args to use for install
+    # -------------------------------
+
+    args.server_name = "domain.tld"
+
+    # ------------
+    # Tests to run
+    # ------------
+
+    # -------------------------------
+    # Commits to test upgrade from
+    # -------------------------------
+
+    test_upgrade_from.15f4690b.name = "Upgrade from 0.9.9"
