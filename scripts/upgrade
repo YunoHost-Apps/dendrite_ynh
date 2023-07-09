@@ -96,11 +96,13 @@ then
 	pushd "$install_dir/build"
 		# Build the sources
 		ynh_use_go
+		export PATH="$PATH"
 		export GOPATH="$install_dir/build/go"
 		export GOCACHE="$install_dir/build/.cache"
-		CGO_ENABLED=1 go build -trimpath -v -o "$install_dir/bin/" ./cmd/dendrite > /dev/null 2>&1
-		CGO_ENABLED=1 go build -trimpath -v -o "$install_dir/bin/" ./cmd/create-account > /dev/null 2>&1
-		CGO_ENABLED=1 go build -trimpath -v -o "$install_dir/bin/" ./cmd/generate-keys > /dev/null 2>&1
+		export CGO_ENABLED=1
+		ynh_exec_warn_less go build -trimpath -v -o "$install_dir/bin/" ./cmd/dendrite
+		ynh_exec_warn_less go build -trimpath -v -o "$install_dir/bin/" ./cmd/create-account
+		ynh_exec_warn_less go build -trimpath -v -o "$install_dir/bin/" ./cmd/generate-keys
 	popd
 
  	ynh_secure_remove --file="$install_dir/build"
