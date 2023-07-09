@@ -60,7 +60,7 @@ then
 	ynh_script_progression --message="Upgrading source files..." --weight=3
 
 	# Download, check integrity, uncompress and patch the source from app.src
-	ynh_setup_source --dest_dir="$install_dir/build" --keep="dendrite.yaml"
+	ynh_setup_source --dest_dir="$install_dir/build" --keep="dendrite.yaml" --full_replace
 fi
 
 chmod 750 "$install_dir"
@@ -96,14 +96,16 @@ then
 	pushd "$install_dir/build"
 		# Build the sources
 		ynh_use_go
+		export PATH="$PATH"
 		export GOPATH="$install_dir/build/go"
 		export GOCACHE="$install_dir/build/.cache"
-		CGO_ENABLED=1 go build -trimpath -v -o "$install_dir/bin/" ./cmd/dendrite > /dev/null 2>&1
-		CGO_ENABLED=1 go build -trimpath -v -o "$install_dir/bin/" ./cmd/create-account > /dev/null 2>&1
-		CGO_ENABLED=1 go build -trimpath -v -o "$install_dir/bin/" ./cmd/generate-keys > /dev/null 2>&1
+		export CGO_ENABLED=1
+		ynh_exec_warn_less go build -trimpath -v -o "$install_dir/bin/" ./cmd/dendrite
+		ynh_exec_warn_less go build -trimpath -v -o "$install_dir/bin/" ./cmd/create-account
+		ynh_exec_warn_less go build -trimpath -v -o "$install_dir/bin/" ./cmd/generate-keys
 	popd
 
-#REMOVEME? 	ynh_secure_remove --file="$install_dir/build"
+ 	ynh_secure_remove --file="$install_dir/build"
 	ynh_remove_go
 fi
 
