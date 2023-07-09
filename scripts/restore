@@ -11,6 +11,12 @@ source ../settings/scripts/_common.sh
 source /usr/share/yunohost/helpers
 
 #=================================================
+# ADD USER TO THE SSL-CERT GROUP
+#=================================================
+
+usermod -a -G ssl-cert $app
+
+#=================================================
 # RESTORE THE APP MAIN DIR
 #=================================================
 ynh_script_progression --message="Restoring the app main directory..." --weight=1
