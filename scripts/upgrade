@@ -39,6 +39,8 @@ fi
 #=================================================
 
 server_name=$(ynh_app_setting_get --app=$app --key=server_name)
+domain=$(ynh_app_setting_get --app=$app --key=domain)
+
 registration_disabled=$(ynh_app_setting_get --app=$app --key=registration_disabled)
 disable_federation=$(ynh_app_setting_get --app=$app --key=disable_federation)
 guests_disabled=$(ynh_app_setting_get --app=$app --key=guests_disabled)
@@ -51,7 +53,6 @@ enable_registration_captcha=$(ynh_app_setting_get --app=$app --key=enable_regist
 # MIGRATION : Manage old settings
 #=================================================
 
-domain=$(ynh_app_setting_get --app=$app --key=domain)
 
 # Define $server_name if not already defined
 if [ -z $server_name ]; then
