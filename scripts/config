@@ -14,6 +14,7 @@ ynh_abort_if_errors
 
 get_registration_disabled() {
     registration_disabled=$(ynh_app_setting_get --app $app --key registration_disabled)
+    domain=$(ynh_app_setting_get --app $app --key domain)
     echo "${registration_disabled}"
 }
 
@@ -27,6 +28,7 @@ set__registration_disabled() {
 
     ynh_write_var_in_file --file=$install_dir/dendrite.yaml --key=registration_disabled --value="${registration_disabled}" 
     ynh_add_systemd_config
+    ynh_systemd_action --service_name=$app --action="restart" --line_match="Starting external listener" --log_path="systemd"
     ynh_app_setting_set --app=$app --key=registration_disabled --value=$registration_disabled
 }
 #=================================================

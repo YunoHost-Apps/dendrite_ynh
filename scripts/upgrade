@@ -52,7 +52,6 @@ enable_registration_captcha=$(ynh_app_setting_get --app=$app --key=enable_regist
 #=================================================
 
 domain=$(ynh_app_setting_get --app=$app --key=domain)
-ynh_app_setting_delete --app=$app --key=domain
 
 # Define $server_name if not already defined
 if [ -z $server_name ]; then

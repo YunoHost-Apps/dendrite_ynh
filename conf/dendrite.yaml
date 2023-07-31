@@ -173,7 +173,7 @@ client_api:
   # Whether to require reCAPTCHA for registration. If you have enabled registration
   # then this is HIGHLY RECOMMENDED to reduce the risk of your homeserver being used
   # for coordinated spam attacks.
-  enable_registration_captcha: __ENABLE_REGISTRATION_CAPTCHA
+  enable_registration_captcha: __ENABLE_REGISTRATION_CAPTCHA__
 
   # Settings for ReCAPTCHA.
   recaptcha_public_key: ""
