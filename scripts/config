@@ -9,30 +9,29 @@
 source _common.sh
 source /usr/share/yunohost/helpers
 
+# Stop script if errors
+ynh_abort_if_errors
+final_path=$(ynh_app_setting_get --app=$app --key=final_path)
+
+get_registration_disabled() {
+    registration_disabled=$(ynh_app_setting_get --app $app --key registration_disabled)
+    echo "${registration_disabled}"
+}
+
+set__registration_disabled() { 
+    if [ $registration_disabled ]
+    then
+        really_enable_open_registration=""
+    else
+        really_enable_open_registration="--really-enable-open-registration"
+    fi
+
+    ynh_write_var_in_file --file=$final_path/dendrite.yaml --key=registration_disabled --value="${registration_disabled}" 
+    ynh_add_systemd_config
+    ynh_app_setting_set --app=$app --key=registration_disabled --value=$registration_disabled
+}
 #=================================================
 # GENERIC FINALIZATION
 #=================================================
-
-ynh_app_config_apply() {
-    _ynh_app_config_apply
-
-    if [ "${changed[registration]}" == "true" ]
-    then
-        if [ $registration -eq 1 ]
-        then
-            registration_disabled="false"
-            really_enable_open_registration="--really-enable-open-registration"
-        else
-            registration_disabled="true"
-            really_enable_open_registration=""
-        fi
-
-        ynh_add_config --template="../conf/dendrite.yaml" --destination="$install_dir/dendrite.yaml"
-        ynh_add_systemd_config
-        ynh_systemd_action --service_name=$app --action="restart" --line_match="Starting external listener" --log_path="systemd"
-        ynh_app_setting_set --app=$app --key=registration --value=$registration
-
-    fi
-}
 
 ynh_app_config_run $1
