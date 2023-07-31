@@ -11,7 +11,6 @@ source /usr/share/yunohost/helpers
 
 # Stop script if errors
 ynh_abort_if_errors
-final_path=$(ynh_app_setting_get --app=$app --key=final_path)
 
 get_registration_disabled() {
     registration_disabled=$(ynh_app_setting_get --app $app --key registration_disabled)
@@ -26,7 +25,7 @@ set__registration_disabled() {
         really_enable_open_registration="--really-enable-open-registration"
     fi
 
-    ynh_write_var_in_file --file=$final_path/dendrite.yaml --key=registration_disabled --value="${registration_disabled}" 
+    ynh_write_var_in_file --file=$install_dir/dendrite.yaml --key=registration_disabled --value="${registration_disabled}" 
     ynh_add_systemd_config
     ynh_app_setting_set --app=$app --key=registration_disabled --value=$registration_disabled
 }

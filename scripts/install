@@ -19,9 +19,11 @@ if [ $registration -eq 1 ]
 then
 	registration_disabled="false"
 	really_enable_open_registration="--really-enable-open-registration"
+	enable_registration_captcha="true"
 else
 	registration_disabled="true"
 	really_enable_open_registration=""
+	enable_registration_captcha="false"
 fi
 
 #=================================================
@@ -29,7 +31,6 @@ fi
 #=================================================
 
 ynh_app_setting_set --app=$app --key=server_name --value=$server_name
-ynh_app_setting_set --app=$app --key=registration --value=$registration
 
 #=================================================
 # ADD USER TO THE SSL-CERT GROUP
@@ -102,6 +103,18 @@ popd
 
 # Set permissions to app files
 chown -R $app:root "$install_dir"
+
+#=================================================
+## SET STANDARD SETTINGS FROM DEFAULT CONFIG
+#=================================================
+disable_federation="false"
+guests_disabled="true"
+registration_shared_secret=""
+ynh_app_setting_set --app=$app --key=registration_disabled --value=$registration_disabled
+ynh_app_setting_set --app=$app --key=disable_federation --value=$disable_federation
+ynh_app_setting_set --app=$app --key=guests_disabled --value=$guests_disabled
+ynh_app_setting_set --app=$app --key=registration_shared_secret --value=$registration_shared_secret
+ynh_app_setting_set --app=$app --key=enable_registration_captcha --value=$enable_registration_captcha
 
 #=================================================
 # ADD A CONFIGURATION

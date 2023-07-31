@@ -6,13 +6,13 @@ name = "Dendrite configuration"
     [main.registration]
     name = "User registration"
 
-        [main.registration.registration]
-        ask = "Should registration be enabled?"
+        [main.registration.registration_disabled]
+        ask = "Should registration be disabled?"
         type = "boolean"
         yes = true
         no = false
-        help = "Allows registration of standard accounts. If your server is federated, reCAPTCHA verification should be activated to avoid spamming the whole Matrix network."
-        default = false
+        help = "Disallows registration of standard accounts. If your server is federated, reCAPTCHA verification should be activated to avoid spamming the whole Matrix network."
+        default = true
 
         [main.registration.disable_federation]
         ask = "Disable Federation."
@@ -21,7 +21,7 @@ name = "Dendrite configuration"
         no = false
         help = "Do not communicate with other homeservers of the Matrix Federation."
         bind = ":/opt/yunohost/__APP__/dendrite.yaml"
-        default = true
+        default = false
 
         [main.registration.guests_disabled]
         ask = "Disable guests registration."
@@ -39,10 +39,10 @@ name = "Dendrite configuration"
         bind = ":/opt/yunohost/__APP__/dendrite.yaml"
 
         [main.registration.enable_registration_captcha]
-        ask = "Disable Federation."
+        ask = "Enable CAPTCHA for registration."
         type = "boolean"
         yes = true
         no = false
-        help = "ReCaptcha API should be configured. See instructions https://matrix-org.github.io/dendrite/administration/registration#recaptcha-verification"
+        help = "ReCAPTCHA API should be configured. See instructions https://matrix-org.github.io/dendrite/administration/registration#recaptcha-verification"
         bind = ":/opt/yunohost/__APP__/dendrite.yaml"
         default = true
