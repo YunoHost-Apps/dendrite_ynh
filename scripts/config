@@ -18,7 +18,7 @@ get_registration_disabled() {
 }
 
 set__registration_disabled() { 
-    if [ $registration_disabled -eq "1" ]
+    if [ "$registration_disabled" -eq "1" ]
     then
         really_enable_open_registration=""
     else
