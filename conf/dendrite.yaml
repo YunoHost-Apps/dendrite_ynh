@@ -81,7 +81,7 @@ global:
 
   # Disables federation. Dendrite will not be able to communicate with other servers
   # in the Matrix federation and the federation API will not be exposed.
-  disable_federation: false
+  disable_federation: __DISABLE_FEDERATION__
 
   # Configures the handling of presence events. Inbound controls whether we receive
   # presence events from other servers, outbound controls whether we send presence
@@ -164,16 +164,16 @@ client_api:
 
   # Prevents new guest accounts from being created. Guest registration is also
   # disabled implicitly by setting 'registration_disabled' above.
-  guests_disabled: true
+  guests_disabled: __GUESTS_DISABLED__
 
   # If set, allows registration by anyone who knows the shared secret, regardless
   # of whether registration is otherwise disabled.
-  registration_shared_secret: ""
+  registration_shared_secret: __REGISTRATION_SHARED_SECRET__
 
   # Whether to require reCAPTCHA for registration. If you have enabled registration
   # then this is HIGHLY RECOMMENDED to reduce the risk of your homeserver being used
   # for coordinated spam attacks.
-  enable_registration_captcha: false
+  enable_registration_captcha: __ENABLE_REGISTRATION_CAPTCHA
 
   # Settings for ReCAPTCHA.
   recaptcha_public_key: ""
