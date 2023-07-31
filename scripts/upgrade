@@ -79,23 +79,25 @@ if [ -z $registration_shared_secret ]; then
 fi
 
 # Load up registration variables
-if [[ $registration -eq 1 ]]
-then
-	registration_disabled="false"
-	really_enable_open_registration="--really-enable-open-registration"
-	enable_registration_captcha="true"
-	ynh_app_setting_set --app=$app --key=registration_disabled --value=$registration_disabled
-	ynh_app_setting_set --app=$app --key=enable_registration_captcha --value=$enable_registration_captcha
-	ynh_app_setting_delete --app=$app --key=registration
+registration=$(ynh_app_setting_get --app=$app --key=registration)
+if [ -z $registration ]; then
 else
-	registration_disabled="true"
-	really_enable_open_registration=""
-	enable_registration_captcha="false"
-	ynh_app_setting_set --app=$app --key=registration_disabled --value=$registration_disabled
-	ynh_app_setting_set --app=$app --key=enable_registration_captcha --value=$enable_registration_captcha
 	ynh_app_setting_delete --app=$app --key=registration
+	if [[ $registration -eq 1 ]]
+	then
+		registration_disabled="false"
+		really_enable_open_registration="--really-enable-open-registration"
+		enable_registration_captcha="true"
+		ynh_app_setting_set --app=$app --key=registration_disabled --value=$registration_disabled
+		ynh_app_setting_set --app=$app --key=enable_registration_captcha --value=$enable_registration_captcha
+	else
+		registration_disabled="true"
+		really_enable_open_registration=""
+		enable_registration_captcha="false"
+		ynh_app_setting_set --app=$app --key=registration_disabled --value=$registration_disabled
+		ynh_app_setting_set --app=$app --key=enable_registration_captcha --value=$enable_registration_captcha
+	fi
 fi
-
 #=================================================
 # DOWNLOAD, CHECK AND UNPACK SOURCE
 #=================================================
