@@ -19,11 +19,11 @@ if [ $registration -eq 1 ]
 then
 	registration_disabled="false"
 	really_enable_open_registration="--really-enable-open-registration"
-	enable_registration_captcha="true"
+	disable_federation="true"
 else
 	registration_disabled="true"
 	really_enable_open_registration=""
-	enable_registration_captcha="false"
+	disable_federation="false"
 fi
 
 #=================================================
@@ -108,9 +108,9 @@ chown -R $app:root "$install_dir"
 #=================================================
 ## SET STANDARD SETTINGS FROM DEFAULT CONFIG
 #=================================================
-disable_federation="false"
 guests_disabled="true"
 registration_shared_secret=""
+enable_registration_captcha="false"
 ynh_app_setting_set --app=$app --key=registration_disabled --value=$registration_disabled
 ynh_app_setting_set --app=$app --key=disable_federation --value=$disable_federation
 ynh_app_setting_set --app=$app --key=guests_disabled --value=$guests_disabled

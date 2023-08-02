@@ -61,9 +61,9 @@ if [ -z $server_name ]; then
 fi
 
 # Define $disable_federation if not already defined
-if [ -z $disable_federation ]; then
-   disable_federation="false"
-   ynh_app_setting_set --app=$app --key=disable_federation --value=$disable_federation
+if [ -z $enable_registration_captcha ]; then
+   enable_registration_captcha="false"
+   ynh_app_setting_set --app=$app --key=enable_registration_captcha --value=$enable_registration_captcha
 fi
 
 # Define $guests_disabled if not already defined
@@ -88,15 +88,15 @@ else
 	then
 		registration_disabled="false"
 		really_enable_open_registration="--really-enable-open-registration"
-		enable_registration_captcha="true"
+		disable_federation="true"
 		ynh_app_setting_set --app=$app --key=registration_disabled --value=$registration_disabled
-		ynh_app_setting_set --app=$app --key=enable_registration_captcha --value=$enable_registration_captcha
+		ynh_app_setting_set --app=$app --key=disable_federation --value=$disable_federation
 	else
 		registration_disabled="true"
 		really_enable_open_registration=""
-		enable_registration_captcha="false"
+		disable_federation="false"
 		ynh_app_setting_set --app=$app --key=registration_disabled --value=$registration_disabled
-		ynh_app_setting_set --app=$app --key=enable_registration_captcha --value=$enable_registration_captcha
+		ynh_app_setting_set --app=$app --key=disable_federation --value=$disable_federation
 	fi
 fi
 
