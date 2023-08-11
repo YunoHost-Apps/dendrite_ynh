@@ -81,7 +81,12 @@ fi
 # Load up registration variables
 registration=$(ynh_app_setting_get --app=$app --key=registration)
 if [ -z $registration ]; then
-	registration=$registration_disabled
+	if [ $registration_disabled -eq 1 ]
+	then
+		really_enable_open_registration="--really-enable-open-registration"
+	else
+		really_enable_open_registration=""
+	fi
 else
 	ynh_app_setting_delete --app=$app --key=registration
 	if [[ $registration -eq 1 ]]
