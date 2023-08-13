@@ -26,15 +26,15 @@ services = ["__APP__"]
         [main.registration.registration_disabled]
         ask = "Disable Registration from Element ?"
         type = "boolean"
-        yes = true
-        no = false
+        yes = "true"
+        no = "false"
         help = "If True, Registration of default user accounts from a Client App is disabled. If false and your server is federated, reCAPTCHA verification should be activated to avoid spamming the whole Matrix network."
 
         [main.registration.enable_registration_captcha]
         ask = "Require CAPTCHA verification for Registration."
         type = "boolean"
-        yes = true
-        no = false
+        yes = "true"
+        no = "false"
         help = "ReCAPTCHA API should be configured. See instructions https://matrix-org.github.io/dendrite/administration/registration#recaptcha-verification"
         bind = ":/opt/yunohost/__APP__/dendrite.yaml"
         visible = "!registration_disabled"
@@ -42,8 +42,8 @@ services = ["__APP__"]
         [main.registration.guests_disabled]
         ask = "Disable guests registration."
         type = "boolean"
-        yes = true
-        no = false
+        yes = "true"
+        no = "false"
         help = "Guest registration is also disabled implicitly if Registration from Element is disabled."
         bind = ":/opt/yunohost/__APP__/dendrite.yaml"
         visible = "!registration_disabled"
@@ -51,8 +51,8 @@ services = ["__APP__"]
         [main.registration.disable_federation]
         ask = "Disable Federation."
         type = "boolean"
-        yes = true
-        no = false
+        yes = "true"
+        no = "false"
         help = "Do not communicate with other homeservers of the Matrix Federation."
         bind = ":/opt/yunohost/__APP__/dendrite.yaml"
         visible = "enable_registration_captcha"

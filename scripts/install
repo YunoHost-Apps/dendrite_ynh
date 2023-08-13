@@ -15,7 +15,7 @@ source /usr/share/yunohost/helpers
 #=================================================
 
 # Allow or deny registration based on is_public
-if [ $registration -eq 1 ]
+if [ "$registration" -eq "1" ]
 then
 	registration_disabled="false"
 	really_enable_open_registration="--really-enable-open-registration"
