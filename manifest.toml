@@ -31,7 +31,6 @@ ram.runtime = "50M"
     help.en = "Select the domain onto which Dendrite will be exclusively installed, e.g. dendrite.domain.tld"
     help.fr = "Sélectionnez le domaine exclusivement dédié à Dendrite, par exemple dendrite.domain.tld"
     type = "domain"
-    full_domain = true
 
     [install.server_name]
     ask.en = "Select the display name for your Dendrite server"
