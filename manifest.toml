@@ -48,10 +48,10 @@ ram.runtime = "50M"
     default = false
 
 [resources]
-        [resources.sources.main]
-        url = "https://github.com/matrix-org/dendrite/archive/refs/tags/v0.13.1.tar.gz"
-        sha256 = "d3217759c5abef155c4e3f9cbbfb3361725cf2e17457b4478c9a4c84ff6881ea"
-        autoupdate.strategy = "latest_github_tag"
+    [resources.sources.main]
+    url = "https://github.com/matrix-org/dendrite/archive/refs/tags/v0.13.1.tar.gz"
+    sha256 = "d3217759c5abef155c4e3f9cbbfb3361725cf2e17457b4478c9a4c84ff6881ea"
+    autoupdate.strategy = "latest_github_tag"
 
     [resources.ports]
     main.default = 8008
@@ -65,7 +65,9 @@ ram.runtime = "50M"
 
     [resources.permissions]
     main.url = "/"
+    main.allowed = "visitors"
     main.show_tile = false
+
     server_api.url = "__DOMAIN__/_matrix"
     server_api.label = "Server access for client apps."
     server_api.show_tile = false
