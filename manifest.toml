@@ -43,6 +43,8 @@ ram.runtime = "50M"
     ask.en = "Should the server allow any visitor to register as a user?"
     ask.fr = "Le serveur doit-il permettre à quiconque de s'enregistrer comme utilisateur ?"
     type = "boolean"
+    help.en = "If no, accounts should be registered by an admin after defining a secret. If yes, to protect your server and the federation from spammer, federation will be deactived by default. You must Activate CAPTCHA verification before federation reactivation. See Config Panel for instructions"
+    help.fr = "Si non, les comptes seront créés par un admin après avoir défini un secret. Si oui, la fédération sera désactivée pour protéger la fédération et vous des spammeurs. Activez la vérification par CAPTCHA avant de réactiver la fédération ! Voir les instructions dans le Config Panel"
     default = false
 
 [resources]
