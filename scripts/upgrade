@@ -89,7 +89,7 @@ if [ -z ${registration:-} ]; then
 	fi
 else
 	ynh_app_setting_delete --app=$app --key=registration
-	if [[ $registration == *"rue" ]]
+	if [[ $registration == *"rue" || $registration -eq 1 ]]
 	then
 		registration_disabled="false"
 		really_enable_open_registration="--really-enable-open-registration"
