@@ -14,13 +14,13 @@ services = ["__APP__"]
         bind = ":/opt/yunohost/__APP__/dendrite.yaml"
 
         [main.registration.helptext]
-        ask = '''
-        HOW TO REGISTER AN ACCOUNT ? 
-        * Provide a Registration Shared Secret.
-        * To register an **admin** account for the user `USERNAME`, connect to your server with ssh and type :
-        `/opt/yunohost/dendrite/bin/create-account -config /opt/yunohost/dendrite/dendrite.yaml -username USERNAME -admin`
-        * Remove `-admin` to register a default user account
-        '''
+        ask = """\
+###### How to register an account ?
+ * Provide a Registration Shared Secret
+ * To register an **admin** account for the user `USERNAME`, connect to your server with ssh and type:
+   `/opt/yunohost/dendrite/bin/create-account -config /opt/yunohost/dendrite/dendrite.yaml -username USERNAME -admin`
+ * Remove `-admin` to register a default user account.
+        """
         type = "markdown"
 
         [main.registration.registration_disabled]
