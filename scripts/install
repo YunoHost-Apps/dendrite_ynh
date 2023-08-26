@@ -45,7 +45,7 @@ usermod -a -G ssl-cert $app
 ynh_script_progression --message="Creating a PostgreSQL database..." --weight=2
 
 ynh_psql_connect_as --user=$db_user --password="$db_pwd" --database=$db_name \
-        <<< "ALTER DATABASE $db_name ENCODING 'UTF8' LC_COLLATE='C' LC_CTYPE='C' template=template0;"
+        <<< "ALTER DATABASE $db_name CHARACTER SET='utf8mb3' COLLATE='utf8mb3_unicode_ci' LC_COLLATE='C' LC_CTYPE='C' template=template0;"
 
 #=================================================
 # DOWNLOAD, CHECK AND UNPACK SOURCE
