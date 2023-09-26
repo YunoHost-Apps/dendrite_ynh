@@ -5,7 +5,7 @@ name = "Dendrite"
 description.en = "Matrix homeserver of second generation"
 description.fr = "Serveur Matrix de seconde génération"
 
-version = "0.13.1~ynh3"
+version = "0.13.2~ynh4"
 
 maintainers = ["tituspijean"]
 
@@ -16,7 +16,7 @@ admindoc = "https://github.com/matrix-org/dendrite/tree/master/docs"
 code = "https://github.com/matrix-org/dendrite"
 
 [integration]
-yunohost = ">= 11.1.17"
+yunohost = ">= 11.2"
 architectures = "all"
 multi_instance = false
 ldap = "not_relevant"
@@ -31,7 +31,10 @@ ram.runtime = "50M"
     help.en = "Select the domain onto which Dendrite will be exclusively installed, e.g. dendrite.domain.tld"
     help.fr = "Sélectionnez le domaine exclusivement dédié à Dendrite, par exemple dendrite.domain.tld"
     type = "domain"
-    full_domain = true
+
+    [install.init_main_permission]
+    type = "group"
+    default = "visitors"
 
     [install.server_name]
     ask.en = "Select the display name for your Dendrite server"
@@ -44,13 +47,15 @@ ram.runtime = "50M"
     ask.en = "Should the server allow any visitor to register as a user?"
     ask.fr = "Le serveur doit-il permettre à quiconque de s'enregistrer comme utilisateur ?"
     type = "boolean"
+    help.en = "If no, accounts should be registered by an admin after defining a secret. If yes, to protect your server and the federation from spammer, federation will be deactived by default. You must Activate CAPTCHA verification before federation reactivation. See Config Panel for instructions"
+    help.fr = "Si non, les comptes seront créés par un admin après avoir défini un secret. Si oui, la fédération sera désactivée pour protéger la fédération et vous des spammeurs. Activez la vérification par CAPTCHA avant de réactiver la fédération ! Voir les instructions dans le Config Panel"
     default = false
 
 [resources]
-        [resources.sources.main]
-        url = "https://github.com/matrix-org/dendrite/archive/refs/tags/v0.13.1.tar.gz"
-        sha256 = "d3217759c5abef155c4e3f9cbbfb3361725cf2e17457b4478c9a4c84ff6881ea"
-        autoupdate.strategy = "latest_github_tag"
+    [resources.sources.main]
+    url = "https://github.com/matrix-org/dendrite/archive/refs/tags/v0.13.2.tar.gz"
+    sha256 = "d98e7d3ca596155b9799feff741a7d39b9712497c516126936202484daea3640"
+    autoupdate.strategy = "latest_github_tag"
 
     [resources.ports]
     main.default = 8008
@@ -64,7 +69,9 @@ ram.runtime = "50M"
 
     [resources.permissions]
     main.url = "/"
+    main.allowed = "visitors"
     main.show_tile = false
+
     server_api.url = "__DOMAIN__/_matrix"
     server_api.label = "Server access for client apps."
     server_api.show_tile = false

@@ -2,11 +2,57 @@ version = "1.0"
 
 [main]
 name = "Dendrite configuration"
+services = ["__APP__"]
 
     [main.registration]
     name = "User registration"
 
-        [main.registration.registration]
-        ask = "Should registration be enabled?"
+        [main.registration.registration_shared_secret]
+        ask = "Shared Secret for Registration."
+        type = "string"
+        help = "Allows registration of default user or admin accounts, even if Registration disabled. See instructions https://matrix-org.github.io/synapse/latest/admin_api/register_api.html . Avoid double quotes in the password."
+        bind = ":/opt/yunohost/__APP__/dendrite.yaml"
+
+        [main.registration.helptext]
+        ask = """\
+###### How to register an account ?
+ * Provide a Registration Shared Secret
+ * To register an **admin** account for the user `USERNAME`, connect to your server with ssh and type:
+   `/opt/yunohost/dendrite/bin/create-account -config /opt/yunohost/dendrite/dendrite.yaml -username USERNAME -admin`
+ * Remove `-admin` to register a default user account.
+        """
+        type = "markdown"
+
+        [main.registration.registration_disabled]
+        ask = "Disable Registration from Element ?"
         type = "boolean"
-        default = false
+        yes = "true"
+        no = "false"
+        help = "If True, Registration of default user accounts from a Client App is disabled. If false and your server is federated, reCAPTCHA verification should be activated to avoid spamming the whole Matrix network."
+
+        [main.registration.enable_registration_captcha]
+        ask = "Require CAPTCHA verification for Registration."
+        type = "boolean"
+        yes = "true"
+        no = "false"
+        help = "ReCAPTCHA API should be configured. See instructions https://matrix-org.github.io/dendrite/administration/registration#recaptcha-verification"
+        bind = ":/opt/yunohost/__APP__/dendrite.yaml"
+        visible = "!registration_disabled"
+
+        [main.registration.guests_disabled]
+        ask = "Disable guests registration."
+        type = "boolean"
+        yes = "true"
+        no = "false"
+        help = "Guest registration is also disabled implicitly if Registration from Element is disabled."
+        bind = ":/opt/yunohost/__APP__/dendrite.yaml"
+        visible = "!registration_disabled"
+        
+        [main.registration.disable_federation]
+        ask = "Disable Federation."
+        type = "boolean"
+        yes = "true"
+        no = "false"
+        help = "Do not communicate with other homeservers of the Matrix Federation."
+        bind = ":/opt/yunohost/__APP__/dendrite.yaml"
+        visible = "enable_registration_captcha"
