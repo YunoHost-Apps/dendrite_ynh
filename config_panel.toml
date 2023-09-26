@@ -10,7 +10,7 @@ services = ["__APP__"]
         [main.registration.registration_shared_secret]
         ask = "Shared Secret for Registration."
         type = "string"
-        help = "Allows registration of default user or admin accounts, even if Registration disabled. See instructions https://matrix-org.github.io/synapse/latest/admin_api/register_api.html"
+        help = "Allows registration of default user or admin accounts, even if Registration disabled. See instructions https://matrix-org.github.io/synapse/latest/admin_api/register_api.html . Avoid double quotes in the password."
         bind = ":/opt/yunohost/__APP__/dendrite.yaml"
 
         [main.registration.helptext]
