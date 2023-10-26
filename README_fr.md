@@ -35,6 +35,7 @@ Dendrite est un serveur domestique Matrix de deuxième génération écrit en Go
 * Site officiel de l’app : <https://matrix.org/>
 * Documentation officielle de l’admin : <https://github.com/matrix-org/dendrite/tree/master/docs>
 * Dépôt de code officiel de l’app : <https://github.com/matrix-org/dendrite>
+* YunoHost Store: <https://apps.yunohost.org/app/dendrite>
 * Signaler un bug : <https://github.com/YunoHost-Apps/dendrite_ynh/issues>
 
 ## Informations pour les développeurs
