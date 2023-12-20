@@ -19,8 +19,11 @@ code = "https://github.com/matrix-org/dendrite"
 yunohost = ">= 11.2"
 architectures = "all"
 multi_instance = false
+
 ldap = "not_relevant"
+
 sso = "not_relevant"
+
 disk = "50M"
 ram.build = "50M"
 ram.runtime = "50M"
@@ -53,8 +56,8 @@ ram.runtime = "50M"
 
 [resources]
     [resources.sources.main]
-    url = "https://github.com/matrix-org/dendrite/archive/refs/tags/v0.13.4.tar.gz"
-    sha256 = "1c6c17b3f2e0e7eb40491fc7b73408b7cbd05d008966f0afe4f61a111582600f"
+    url = "https://github.com/matrix-org/dendrite/archive/refs/tags/v0.13.5.tar.gz"
+    sha256 = "e2098d635a83d8ae7834b21177fc056fa3186feaed564e55a590f64eb3c656f0"
     autoupdate.strategy = "latest_github_tag"
 
     [resources.ports]
