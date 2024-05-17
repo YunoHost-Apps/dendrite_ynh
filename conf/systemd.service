@@ -1,5 +1,5 @@
 [Unit]
-Description=Dentrite Matrix homeserver
+Description=Dentrite: Matrix homeserver
 After=network.target postgresql@__PSQL_VERSION__-main.service
 
 [Service]
