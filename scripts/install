@@ -7,7 +7,6 @@
 #=================================================
 
 source _common.sh
-source ynh_install_go
 source /usr/share/yunohost/helpers
 
 #=================================================
@@ -123,7 +122,7 @@ ynh_app_setting_set --app=$app --key=enable_registration_captcha --value=$enable
 ynh_script_progression --message="Adding a configuration file..."
 
 # Copy and modify the config file
-ynh_add_config --template="../conf/dendrite.yaml" --destination="$install_dir/dendrite.yaml"
+ynh_add_config --template="dendrite.yaml" --destination="$install_dir/dendrite.yaml"
 
 chmod 400 "$install_dir/dendrite.yaml"
 chown $app:$app "$install_dir/dendrite.yaml"
