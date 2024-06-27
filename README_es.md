@@ -5,7 +5,7 @@ No se debe editar a mano.
 
 # Dendrite para Yunohost
 
-[![Nivel de integración](https://dash.yunohost.org/integration/dendrite.svg)](https://dash.yunohost.org/appci/app/dendrite) ![Estado funcional](https://ci-apps.yunohost.org/ci/badges/dendrite.status.svg) ![Estado En Mantención](https://ci-apps.yunohost.org/ci/badges/dendrite.maintain.svg)
+[![Nivel de integración](https://dash.yunohost.org/integration/dendrite.svg)](https://ci-apps.yunohost.org/ci/apps/dendrite/) ![Estado funcional](https://ci-apps.yunohost.org/ci/badges/dendrite.status.svg) ![Estado En Mantención](https://ci-apps.yunohost.org/ci/badges/dendrite.maintain.svg)
 
 [![Instalar Dendrite con Yunhost](https://install-app.yunohost.org/install-with-yunohost.svg)](https://install-app.yunohost.org/?app=dendrite)
 

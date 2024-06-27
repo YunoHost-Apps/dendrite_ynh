@@ -5,7 +5,7 @@ EZ editatu eskuz.
 
 # Dendrite YunoHost-erako
 
-[![Integrazio maila](https://dash.yunohost.org/integration/dendrite.svg)](https://dash.yunohost.org/appci/app/dendrite) ![Funtzionamendu egoera](https://ci-apps.yunohost.org/ci/badges/dendrite.status.svg) ![Mantentze egoera](https://ci-apps.yunohost.org/ci/badges/dendrite.maintain.svg)
+[![Integrazio maila](https://dash.yunohost.org/integration/dendrite.svg)](https://ci-apps.yunohost.org/ci/apps/dendrite/) ![Funtzionamendu egoera](https://ci-apps.yunohost.org/ci/badges/dendrite.status.svg) ![Mantentze egoera](https://ci-apps.yunohost.org/ci/badges/dendrite.maintain.svg)
 
 [![Instalatu Dendrite YunoHost-ekin](https://install-app.yunohost.org/install-with-yunohost.svg)](https://install-app.yunohost.org/?app=dendrite)
 

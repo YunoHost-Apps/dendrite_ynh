@@ -5,7 +5,7 @@
 
 # YunoHost 上的 Dendrite
 
-[![集成程度](https://dash.yunohost.org/integration/dendrite.svg)](https://dash.yunohost.org/appci/app/dendrite) ![工作状态](https://ci-apps.yunohost.org/ci/badges/dendrite.status.svg) ![维护状态](https://ci-apps.yunohost.org/ci/badges/dendrite.maintain.svg)
+[![集成程度](https://dash.yunohost.org/integration/dendrite.svg)](https://ci-apps.yunohost.org/ci/apps/dendrite/) ![工作状态](https://ci-apps.yunohost.org/ci/badges/dendrite.status.svg) ![维护状态](https://ci-apps.yunohost.org/ci/badges/dendrite.maintain.svg)
 
 [![使用 YunoHost 安装 Dendrite](https://install-app.yunohost.org/install-with-yunohost.svg)](https://install-app.yunohost.org/?app=dendrite)
 
