@@ -11,7 +11,7 @@ services = ["__APP__"]
         ask = "Shared Secret for Registration."
         type = "string"
         help = "Allows registration of default user or admin accounts, even if Registration disabled. See instructions https://matrix-org.github.io/synapse/latest/admin_api/register_api.html . Avoid double quotes in the password."
-        bind = ":/opt/yunohost/__APP__/dendrite.yaml"
+        bind = ":__INSTALL_DIR__/dendrite.yaml"
 
         [main.registration.helptext]
         ask = """\
@@ -36,7 +36,7 @@ services = ["__APP__"]
         yes = "true"
         no = "false"
         help = "ReCAPTCHA API should be configured. See instructions https://matrix-org.github.io/dendrite/administration/registration#recaptcha-verification"
-        bind = ":/opt/yunohost/__APP__/dendrite.yaml"
+        bind = ":__INSTALL_DIR__/dendrite.yaml"
         visible = "!registration_disabled"
 
         [main.registration.guests_disabled]
@@ -45,7 +45,7 @@ services = ["__APP__"]
         yes = "true"
         no = "false"
         help = "Guest registration is also disabled implicitly if Registration from Element is disabled."
-        bind = ":/opt/yunohost/__APP__/dendrite.yaml"
+        bind = ":__INSTALL_DIR__/dendrite.yaml"
         visible = "!registration_disabled"
         
         [main.registration.disable_federation]
@@ -54,5 +54,5 @@ services = ["__APP__"]
         yes = "true"
         no = "false"
         help = "Do not communicate with other homeservers of the Matrix Federation."
-        bind = ":/opt/yunohost/__APP__/dendrite.yaml"
+        bind = ":__INSTALL_DIR__/dendrite.yaml"
         visible = "enable_registration_captcha"
