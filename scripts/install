@@ -44,17 +44,16 @@ ynh_psql_db_shell <<< "CREATE DATABASE $db_name ENCODING 'UTF8' LC_COLLATE='C' L
 #=================================================
 ynh_script_progression "Setting up source files..."
 
-# Download, check integrity, uncompress and patch the source from app.src
 ynh_setup_source --dest_dir="$install_dir/build"
 
-#REMOVEME? Assuming the install dir is setup using ynh_setup_source, the proper chmod/chowns are now already applied and it shouldn't be necessary to tweak perms | chmod -R o-rwx "$install_dir"
-#REMOVEME? Assuming the install dir is setup using ynh_setup_source, the proper chmod/chowns are now already applied and it shouldn't be necessary to tweak perms | chown -R $app:root "$install_dir"
+chmod -R o-rwx "$install_dir"
+chown -R $app:root "$install_dir"
+
 #=================================================
 # NGINX CONFIGURATION
 #=================================================
 ynh_script_progression "Configuring NGINX web server..."
 
-# Create a dedicated NGINX config
 ynh_config_add_nginx
 
 # Create .well-known redirection for access by federation
@@ -64,8 +63,6 @@ then
 fi
 
 #=================================================
-# SPECIFIC SETUP
-#=================================================
 # BUILDING SOURCES AND SETTING UP THE SERVER
 #=================================================
 ynh_script_progression "Building the sources (it will take some time)..."
@@ -74,7 +71,6 @@ ynh_go_install
 
 pushd "$install_dir/build"
 	# Build the sources
-
 	export GOPATH="$install_dir/build/go"
 	export GOCACHE="$install_dir/build/.cache"
 	CGO_ENABLED=1 go build -trimpath -v -o "$install_dir/bin/" ./cmd/dendrite > /dev/null 2>&1
@@ -95,10 +91,12 @@ pushd "$install_dir"
 popd
 
 # Set permissions to app files
-#REMOVEME? Assuming the install dir is setup using ynh_setup_source, the proper chmod/chowns are now already applied and it shouldn't be necessary to tweak perms | chown -R $app:root "$install_dir"
+chown -R $app:root "$install_dir"
+
 #=================================================
 ## SET STANDARD SETTINGS FROM DEFAULT CONFIG
 #=================================================
+
 guests_disabled="true"
 registration_shared_secret=""
 enable_registration_captcha="false"
@@ -113,7 +111,6 @@ ynh_app_setting_set --key=enable_registration_captcha --value=$enable_registrati
 #=================================================
 ynh_script_progression "Adding $app's configuration..."
 
-# Copy and modify the config file
 ynh_config_add --template="dendrite.yaml" --destination="$install_dir/dendrite.yaml"
 
 chmod 400 "$install_dir/dendrite.yaml"
@@ -124,7 +121,6 @@ chown $app:$app "$install_dir/dendrite.yaml"
 #=================================================
 ynh_script_progression "Configuring $app's systemd service..."
 
-# Create a dedicated systemd config
 ynh_config_add_systemd
 
 #=================================================
@@ -133,7 +129,7 @@ ynh_config_add_systemd
 ynh_script_progression "Configuring log rotation..."
 
 mkdir -p /var/log/$app
-#REMOVEME? Assuming ynh_config_add_logrotate is called, the proper chmod/chowns are now already applied and it shouldn't be necessary to tweak perms | chown -R $app:root /var/log/$app
+chown -R $app:root /var/log/$app
 
 # Use logrotate to manage application logfile(s)
 ynh_config_add_logrotate
@@ -153,7 +149,6 @@ yunohost service add $app --description="Dendrite Matrix homeserver" --log="/var
 #=================================================
 ynh_script_progression "Starting $app's systemd service..."
 
-# Start a systemd service
 ynh_systemctl --service=$app --action="start" --wait_until="Starting external listener" --log_path="systemd"
 
 #=================================================

@@ -16,7 +16,7 @@ ynh_systemctl --service=$app --action="stop" --wait_until="Dendrite is exiting n
 ynh_script_progression "Ensuring downward compatibility..."
 
 if ! groups $app | grep -q 'ssl-cert'; then
-        adduser $app ssl-cert
+	adduser $app ssl-cert
 fi
 
 #=================================================
@@ -37,32 +37,16 @@ enable_registration_captcha=$(ynh_app_setting_get --key=enable_registration_capt
 #=================================================
 
 # Define $server_name if not already defined
-# FIXMEhelpers2.1: maybe replace with: ynh_app_setting_set_default --key=server_name --value=$domain
-if [ -z ${server_name:-} ]; then
-   server_name=$domain
-   ynh_app_setting_set --key=server_name --value=$domain
-fi
+ynh_app_setting_set_default --key=server_name --value=$domain
 
 # Define $disable_federation if not already defined
-# FIXMEhelpers2.1: maybe replace with: ynh_app_setting_set_default --key=enable_registration_captcha --value="false"
-if [ -z ${enable_registration_captcha:-} ]; then
-   enable_registration_captcha="false"
-   ynh_app_setting_set --key=enable_registration_captcha --value=$enable_registration_captcha
-fi
+ynh_app_setting_set_default --key=enable_registration_captcha --value="false"
 
 # Define $guests_disabled if not already defined
-# FIXMEhelpers2.1: maybe replace with: ynh_app_setting_set_default --key=guests_disabled --value="true"
-if [ -z ${guests_disabled:-} ]; then
-   guests_disabled="true"
-   ynh_app_setting_set --key=guests_disabled --value=$guests_disabled
-fi
+ynh_app_setting_set_default --key=guests_disabled --value="true"
 
 # Define $registration_shared_secret if not already defined
-# FIXMEhelpers2.1: maybe replace with: ynh_app_setting_set_default --key=registration_shared_secret --value=""
-if [ -z ${registration_shared_secret:-} ]; then
-   registration_shared_secret=""
-   ynh_app_setting_set --key=registration_shared_secret --value=$registration_shared_secret
-fi
+ynh_app_setting_set_default --key=registration_shared_secret --value=""
 
 # Load up registration variables
 registration=$(ynh_app_setting_get --key=registration)
@@ -96,12 +80,12 @@ fi
 #=================================================
 ynh_script_progression "Upgrading source files..."
 
-# Download, check integrity, uncompress and patch the source from app.src
 ynh_setup_source --dest_dir="$install_dir/build" --keep="dendrite.yaml" --full_replace
 
-#REMOVEME? Assuming the install dir is setup using ynh_setup_source, the proper chmod/chowns are now already applied and it shouldn't be necessary to tweak perms | chmod 750 "$install_dir"
-#REMOVEME? Assuming the install dir is setup using ynh_setup_source, the proper chmod/chowns are now already applied and it shouldn't be necessary to tweak perms | chmod -R o-rwx "$install_dir"
-#REMOVEME? Assuming the install dir is setup using ynh_setup_source, the proper chmod/chowns are now already applied and it shouldn't be necessary to tweak perms | chown -R $app:root "$install_dir"
+chmod 750 "$install_dir"
+chmod -R o-rwx "$install_dir"
+chown -R $app:root "$install_dir"
+
 #=================================================
 # BUILDING SOURCES AND SETTING UP THE SERVER
 #=================================================
@@ -111,7 +95,6 @@ ynh_go_install
 
 pushd "$install_dir/build"
 	# Build the sources
-
 	export PATH="$PATH"
 	export GOPATH="$install_dir/build/go"
 	export GOCACHE="$install_dir/build/.cache"
@@ -124,7 +107,8 @@ popd
 ynh_safe_rm "$install_dir/build"
 ynh_go_remove
 
-#REMOVEME? Assuming the install dir is setup using ynh_setup_source, the proper chmod/chowns are now already applied and it shouldn't be necessary to tweak perms | chown -R $app:root "$install_dir"
+chown -R $app:root "$install_dir"
+
 #=================================================
 # UPDATE A CONFIG FILE
 #=================================================
@@ -140,7 +124,6 @@ chown $app:$app "$install_dir/dendrite.yaml"
 #=================================================
 ynh_script_progression "Upgrading system configurations related to $app..."
 
-# Create a dedicated NGINX config
 ynh_config_add_nginx
 
 # Create .well-known redirection for access by federation
@@ -149,15 +132,13 @@ then
     ynh_config_add --template="server_name.conf" --destination="/etc/nginx/conf.d/${server_name}.d/${app}_server_name.conf"
 fi
 
-# Create a dedicated systemd config
 ynh_config_add_systemd
 
 yunohost service add $app --description="Dendrite Matrix homeserver" --log="/var/log/$app/$app.log" --needs_exposed_ports "$port_tls"
 
 mkdir -p /var/log/$app
-#REMOVEME? Assuming ynh_config_add_logrotate is called, the proper chmod/chowns are now already applied and it shouldn't be necessary to tweak perms | chown -R $app:root /var/log/$app
+chown -R $app:root /var/log/$app
 
-# Use logrotate to manage app-specific logfile(s)
 ynh_config_add_logrotate
 
 #=================================================

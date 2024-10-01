@@ -3,9 +3,6 @@
 source _common.sh
 source /usr/share/yunohost/helpers
 
-# Stop script if errors
-#REMOVEME? ynh_abort_if_errors
-
 get_registration_disabled() {
     registration_disabled=$(ynh_app_setting_get --key registration_disabled)
     echo "${registration_disabled}"

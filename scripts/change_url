@@ -7,7 +7,6 @@ source /usr/share/yunohost/helpers
 # LOAD SETTINGS
 #=================================================
 
-# Add settings here as needed by your application
 domain=$YNH_APP_NEW_DOMAIN
 
 # Load up registration variables
@@ -35,13 +34,10 @@ ynh_script_progression "Updating NGINX web server configuration..."
 ynh_config_change_url_nginx
 
 #=================================================
-# SPECIFIC MODIFICATIONS
-#=================================================
 # SETUP SYSTEMD
 #=================================================
 ynh_script_progression "Updating systemd configuration..."
 
-# Create a dedicated systemd config
 ynh_config_add_systemd
 
 #=================================================
@@ -49,7 +45,6 @@ ynh_config_add_systemd
 #=================================================
 ynh_script_progression "Starting $app's systemd service..."
 
-# Start a systemd service
 ynh_systemctl --service=$app --action="start" --wait_until="Cleaning old notifications" --log_path="systemd"
 
 #=================================================
