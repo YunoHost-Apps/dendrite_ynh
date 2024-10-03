@@ -82,10 +82,6 @@ ynh_script_progression "Upgrading source files..."
 
 ynh_setup_source --dest_dir="$install_dir/build" --keep="dendrite.yaml" --full_replace
 
-chmod 750 "$install_dir"
-chmod -R o-rwx "$install_dir"
-chown -R $app:root "$install_dir"
-
 #=================================================
 # BUILDING SOURCES AND SETTING UP THE SERVER
 #=================================================
@@ -99,9 +95,9 @@ pushd "$install_dir/build"
 	export GOPATH="$install_dir/build/go"
 	export GOCACHE="$install_dir/build/.cache"
 	export CGO_ENABLED=1
-	ynh_hide_warnings go build -trimpath -v -o "$install_dir/bin/" ./cmd/dendrite
-	ynh_hide_warnings go build -trimpath -v -o "$install_dir/bin/" ./cmd/create-account
-	ynh_hide_warnings go build -trimpath -v -o "$install_dir/bin/" ./cmd/generate-keys
+	ynh_hide_warnings ynh_exec_as_app go build -trimpath -v -o "$install_dir/bin/" ./cmd/dendrite
+	ynh_hide_warnings ynh_exec_as_app go build -trimpath -v -o "$install_dir/bin/" ./cmd/create-account
+	ynh_hide_warnings ynh_exec_as_app go build -trimpath -v -o "$install_dir/bin/" ./cmd/generate-keys
 popd
 
 ynh_safe_rm "$install_dir/build"
@@ -115,9 +111,6 @@ chown -R $app:root "$install_dir"
 ynh_script_progression "Updating configuration..."
 
 ynh_config_add --template="dendrite.yaml" --destination="$install_dir/dendrite.yaml"
-
-chmod 400 "$install_dir/dendrite.yaml"
-chown $app:$app "$install_dir/dendrite.yaml"
 
 #=================================================
 # REAPPLY SYSTEM CONFIGURATIONS
