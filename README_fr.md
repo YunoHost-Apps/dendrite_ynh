@@ -25,7 +25,7 @@ Dendrite est un serveur domestique Matrix de deuxième génération écrit en Go
 - Évolutif : peut fonctionner sur plusieurs machines et éventuellement évoluer vers des déploiements massifs de serveurs domestiques.
 
 
-**Version incluse :** 0.13.7~ynh1
+**Version incluse :** 0.13.8~ynh1
 ## :red_circle: Anti-fonctionnalités
 
 - **Logiciel en version alpha **: Le logiciel est au tout début de son développement. Il pourrait contenir des fonctionnalités changeantes ou instables, des bugs, et des failles de sécurité.

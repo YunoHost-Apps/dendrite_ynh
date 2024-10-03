@@ -18,7 +18,7 @@ test_format = 1.0
     # Commits to test upgrade from
     # -------------------------------
 
-    test_upgrade_from.15f4690b.name = "Upgrade from 0.9.9"
-    test_upgrade_from.15f4690b.args.domain = "domain.tld"
-    test_upgrade_from.15f4690b.args.server_name = "domain.tld"
-    test_upgrade_from.15f4690b.args.registration = true
+    test_upgrade_from.fc2cbb12.name = "Upgrade from 0.12.0"
+    test_upgrade_from.fc2cbb12.args.domain = "domain.tld"
+    test_upgrade_from.fc2cbb12.args.server_name = "domain.tld"
+    test_upgrade_from.fc2cbb12.args.registration = true

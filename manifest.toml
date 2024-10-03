@@ -5,7 +5,7 @@ name = "Dendrite"
 description.en = "Matrix homeserver of second generation"
 description.fr = "Serveur Matrix de seconde génération"
 
-version = "0.13.7~ynh1"
+version = "0.13.8~ynh1"
 
 maintainers = ["tituspijean"]
 
@@ -57,8 +57,8 @@ ram.runtime = "50M"
 
 [resources]
     [resources.sources.main]
-    url = "https://github.com/matrix-org/dendrite/archive/refs/tags/v0.13.7.tar.gz"
-    sha256 = "a029c3bd0dd188c5ac1bad7d9008de80882d6b121488db3140b2aa110527679b"
+    url = "https://github.com/matrix-org/dendrite/archive/refs/tags/v0.13.8.tar.gz"
+    sha256 = "b0f04539f0894bc1ea5153a4b52ebed2d813ea6a5172d1de1cd0a4bb6e67dcfd"
     autoupdate.strategy = "latest_github_tag"
 
     [resources.ports]
@@ -69,7 +69,6 @@ ram.runtime = "50M"
     [resources.system_user]
 
     [resources.install_dir]
-    dir = "/opt/yunohost/__APP__"
 
     [resources.permissions]
     main.url = "/"
