@@ -46,9 +46,6 @@ ynh_script_progression "Setting up source files..."
 
 ynh_setup_source --dest_dir="$install_dir/build"
 
-chmod -R o-rwx "$install_dir"
-chown -R $app:root "$install_dir"
-
 #=================================================
 # NGINX CONFIGURATION
 #=================================================
@@ -73,9 +70,9 @@ pushd "$install_dir/build"
 	# Build the sources
 	export GOPATH="$install_dir/build/go"
 	export GOCACHE="$install_dir/build/.cache"
-	CGO_ENABLED=1 go build -trimpath -v -o "$install_dir/bin/" ./cmd/dendrite > /dev/null 2>&1
-	CGO_ENABLED=1 go build -trimpath -v -o "$install_dir/bin/" ./cmd/create-account > /dev/null 2>&1
-	CGO_ENABLED=1 go build -trimpath -v -o "$install_dir/bin/" ./cmd/generate-keys > /dev/null 2>&1
+	ynh_hide_warnings ynh_exec_as_app CGO_ENABLED=1 go build -trimpath -v -o "$install_dir/bin/" ./cmd/dendrite > /dev/null 2>&1
+	ynh_hide_warnings ynh_exec_as_app CGO_ENABLED=1 go build -trimpath -v -o "$install_dir/bin/" ./cmd/create-account > /dev/null 2>&1
+	ynh_hide_warnings ynh_exec_as_app CGO_ENABLED=1 go build -trimpath -v -o "$install_dir/bin/" ./cmd/generate-keys > /dev/null 2>&1
 popd
 
 ynh_safe_rm "$install_dir/build"
@@ -90,7 +87,6 @@ pushd "$install_dir"
 	./bin/generate-keys --tls-cert server.crt --tls-key server.key
 popd
 
-# Set permissions to app files
 chown -R $app:root "$install_dir"
 
 #=================================================
@@ -112,9 +108,6 @@ ynh_app_setting_set --key=enable_registration_captcha --value=$enable_registrati
 ynh_script_progression "Adding $app's configuration..."
 
 ynh_config_add --template="dendrite.yaml" --destination="$install_dir/dendrite.yaml"
-
-chmod 400 "$install_dir/dendrite.yaml"
-chown $app:$app "$install_dir/dendrite.yaml"
 
 #=================================================
 # SETUP SYSTEMD
