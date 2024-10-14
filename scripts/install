@@ -116,6 +116,8 @@ ynh_script_progression "Configuring $app's systemd service..."
 
 ynh_config_add_systemd
 
+yunohost service add $app --description="Dendrite Matrix homeserver" --log="/var/log/$app/$app.log" --needs_exposed_ports "$port_tls"
+
 #=================================================
 # SETUP LOGROTATE
 #=================================================
@@ -129,13 +131,6 @@ ynh_config_add_logrotate
 # HACKY: Match the weirdly renamed rotated logs.
 # Looking at you, matrix-org/dugong library
 ynh_replace --match="/var/log/$app/*.log" --replace="/var/log/$app/*.log.????-??-??" --file="/etc/logrotate.d/$app"
-
-#=================================================
-# INTEGRATE SERVICE IN YUNOHOST
-#=================================================
-ynh_script_progression "Integrating service in YunoHost..."
-
-yunohost service add $app --description="Dendrite Matrix homeserver" --log="/var/log/$app/$app.log" --needs_exposed_ports "$port_tls"
 
 #=================================================
 # START SYSTEMD SERVICE
