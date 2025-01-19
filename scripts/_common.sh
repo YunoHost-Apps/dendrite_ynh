@@ -4,5 +4,5 @@
 # COMMON VARIABLES AND CUSTOM HELPERS
 #=================================================
 
-go_version="1.21"
+GO_VERSION="1.22"
 psql_version=$PSQL_VERSION

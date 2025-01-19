@@ -5,7 +5,9 @@ Ini TIDAK boleh diedit dengan tangan.
 
 # Dendrite untuk YunoHost
 
-[![Tingkat integrasi](https://dash.yunohost.org/integration/dendrite.svg)](https://ci-apps.yunohost.org/ci/apps/dendrite/) ![Status kerja](https://ci-apps.yunohost.org/ci/badges/dendrite.status.svg) ![Status pemeliharaan](https://ci-apps.yunohost.org/ci/badges/dendrite.maintain.svg)
+[![Tingkat integrasi](https://apps.yunohost.org/badge/integration/dendrite)](https://ci-apps.yunohost.org/ci/apps/dendrite/)
+![Status kerja](https://apps.yunohost.org/badge/state/dendrite)
+![Status pemeliharaan](https://apps.yunohost.org/badge/maintained/dendrite)
 
 [![Pasang Dendrite dengan YunoHost](https://install-app.yunohost.org/install-with-yunohost.svg)](https://install-app.yunohost.org/?app=dendrite)
 
@@ -25,7 +27,7 @@ Dendrite is a second-generation Matrix homeserver written in Go. It intends to p
 - Scalable: can run on multiple machines and eventually scale to massive homeserver deployments.
 
 
-**Versi terkirim:** 0.13.8~ynh1
+**Versi terkirim:** 0.14.1~ynh1
 ## :red_circle: Antifitur
 
 - **Alpha software**: Early development stage. May contain changing or unstable features, bugs, and security vulnerability.
@@ -33,8 +35,8 @@ Dendrite is a second-generation Matrix homeserver written in Go. It intends to p
 ## Dokumentasi dan sumber daya
 
 - Website aplikasi resmi: <https://matrix.org/>
-- Dokumentasi admin resmi: <https://github.com/matrix-org/dendrite/tree/master/docs>
-- Depot kode aplikasi hulu: <https://github.com/matrix-org/dendrite>
+- Dokumentasi admin resmi: <https://github.com/element-hq/dendrite/tree/master/docs>
+- Depot kode aplikasi hulu: <https://github.com/element-hq/dendrite>
 - Gudang YunoHost: <https://apps.yunohost.org/app/dendrite>
 - Laporkan bug: <https://github.com/YunoHost-Apps/dendrite_ynh/issues>
 

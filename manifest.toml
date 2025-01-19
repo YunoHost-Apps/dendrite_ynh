@@ -5,24 +5,23 @@ name = "Dendrite"
 description.en = "Matrix homeserver of second generation"
 description.fr = "Serveur Matrix de seconde génération"
 
-version = "0.13.8~ynh1"
+version = "0.14.1~ynh1"
 
 maintainers = ["tituspijean"]
 
 [upstream]
 license = "Apache-2.0"
 website = "https://matrix.org/"
-admindoc = "https://github.com/matrix-org/dendrite/tree/master/docs"
-code = "https://github.com/matrix-org/dendrite"
+admindoc = "https://github.com/element-hq/dendrite/tree/master/docs"
+code = "https://github.com/element-hq/dendrite"
 
 [integration]
-yunohost = ">= 11.2.30"
+yunohost = ">= 12.0.10"
 helpers_version = "2.1"
 architectures = "all"
 multi_instance = false
 
 ldap = "not_relevant"
-
 sso = "not_relevant"
 
 disk = "50M"
@@ -57,8 +56,8 @@ ram.runtime = "50M"
 
 [resources]
     [resources.sources.main]
-    url = "https://github.com/matrix-org/dendrite/archive/refs/tags/v0.13.8.tar.gz"
-    sha256 = "b0f04539f0894bc1ea5153a4b52ebed2d813ea6a5172d1de1cd0a4bb6e67dcfd"
+    url = "https://github.com/element-hq/dendrite/archive/refs/tags/v0.14.1.tar.gz"
+    sha256 = "400aca67b3ed558c8e9d1fb40588589d39e8f67102c6233a5c4d3675ed2a71ea"
     autoupdate.strategy = "latest_github_tag"
 
     [resources.ports]
