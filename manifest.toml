@@ -16,7 +16,7 @@ admindoc = "https://github.com/element-hq/dendrite/tree/master/docs"
 code = "https://github.com/element-hq/dendrite"
 
 [integration]
-yunohost = ">= 11.2.12"
+yunohost = ">= 12.0.0"
 architectures = "all"
 multi_instance = false
 
