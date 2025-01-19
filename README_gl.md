@@ -5,7 +5,9 @@ NON debe editarse manualmente.
 
 # Dendrite para YunoHost
 
-[![Nivel de integración](https://dash.yunohost.org/integration/dendrite.svg)](https://ci-apps.yunohost.org/ci/apps/dendrite/) ![Estado de funcionamento](https://ci-apps.yunohost.org/ci/badges/dendrite.status.svg) ![Estado de mantemento](https://ci-apps.yunohost.org/ci/badges/dendrite.maintain.svg)
+[![Nivel de integración](https://apps.yunohost.org/badge/integration/dendrite)](https://ci-apps.yunohost.org/ci/apps/dendrite/)
+![Estado de funcionamento](https://apps.yunohost.org/badge/state/dendrite)
+![Estado de mantemento](https://apps.yunohost.org/badge/maintained/dendrite)
 
 [![Instalar Dendrite con YunoHost](https://install-app.yunohost.org/install-with-yunohost.svg)](https://install-app.yunohost.org/?app=dendrite)
 
@@ -25,7 +27,7 @@ Dendrite is a second-generation Matrix homeserver written in Go. It intends to p
 - Scalable: can run on multiple machines and eventually scale to massive homeserver deployments.
 
 
-**Versión proporcionada:** 0.13.8~ynh1
+**Versión proporcionada:** 0.14.1~ynh1
 ## :red_circle: Debes considerar
 
 - **Alpha software**: Early development stage. May contain changing or unstable features, bugs, and security vulnerability.
@@ -33,8 +35,8 @@ Dendrite is a second-generation Matrix homeserver written in Go. It intends to p
 ## Documentación e recursos
 
 - Web oficial da app: <https://matrix.org/>
-- Documentación oficial para admin: <https://github.com/matrix-org/dendrite/tree/master/docs>
-- Repositorio de orixe do código: <https://github.com/matrix-org/dendrite>
+- Documentación oficial para admin: <https://github.com/element-hq/dendrite/tree/master/docs>
+- Repositorio de orixe do código: <https://github.com/element-hq/dendrite>
 - Tenda YunoHost: <https://apps.yunohost.org/app/dendrite>
 - Informar dun problema: <https://github.com/YunoHost-Apps/dendrite_ynh/issues>
 
