@@ -19,12 +19,17 @@ else
 	disable_federation="false"
 fi
 
-#=================================================
-# STORE SETTINGS FROM MANIFEST
-#=================================================
 
+guests_disabled="true"
+registration_shared_secret=""
+enable_registration_captcha="false"
+
+ynh_app_setting_set --key=registration_disabled --value=$registration_disabled
+ynh_app_setting_set --key=disable_federation --value=$disable_federation
+ynh_app_setting_set --key=guests_disabled --value=$guests_disabled
+ynh_app_setting_set --key=registration_shared_secret --value=$registration_shared_secret
+ynh_app_setting_set --key=enable_registration_captcha --value=$enable_registration_captcha
 ynh_app_setting_set --key=server_name --value=$server_name
-ynh_app_setting_set --key=domain --value=$domain
 
 #=================================================
 # ADD USER TO THE SSL-CERT GROUP
@@ -88,19 +93,6 @@ pushd "$install_dir"
 popd
 
 chown -R $app:root "$install_dir"
-
-#=================================================
-## SET STANDARD SETTINGS FROM DEFAULT CONFIG
-#=================================================
-
-guests_disabled="true"
-registration_shared_secret=""
-enable_registration_captcha="false"
-ynh_app_setting_set --key=registration_disabled --value=$registration_disabled
-ynh_app_setting_set --key=disable_federation --value=$disable_federation
-ynh_app_setting_set --key=guests_disabled --value=$guests_disabled
-ynh_app_setting_set --key=registration_shared_secret --value=$registration_shared_secret
-ynh_app_setting_set --key=enable_registration_captcha --value=$enable_registration_captcha
 
 #=================================================
 # ADD A CONFIGURATION
