@@ -27,7 +27,7 @@ Dendrite is a second-generation Matrix homeserver written in Go. It intends to p
 - Scalable: can run on multiple machines and eventually scale to massive homeserver deployments.
 
 
-**Paketatutako bertsioa:** 0.14.1~ynh1
+**Paketatutako bertsioa:** 0.14.1~ynh2
 ## :red_circle: Ezaugarri zalantzagarriak
 
 - **Alfa softwarea**: Garapenaren hasierako fasean dago. Ezaugarri aldakor edo ezegonkorrak, erroreak eta segurtasun-arazoak izan ditzazke.
