@@ -1,11 +1,5 @@
 #!/bin/bash
 
-#=================================================
-# GENERIC START
-#=================================================
-# IMPORT GENERIC HELPERS
-#=================================================
-
 source _common.sh
 source /usr/share/yunohost/helpers
 
@@ -29,8 +23,8 @@ fi
 # STORE SETTINGS FROM MANIFEST
 #=================================================
 
-ynh_app_setting_set --app=$app --key=server_name --value=$server_name
-ynh_app_setting_set --app=$app --key=domain --value=$domain
+ynh_app_setting_set --key=server_name --value=$server_name
+ynh_app_setting_set --key=domain --value=$domain
 
 #=================================================
 # ADD USER TO THE SSL-CERT GROUP
@@ -39,53 +33,52 @@ ynh_app_setting_set --app=$app --key=domain --value=$domain
 usermod -a -G ssl-cert $app
 
 #=================================================
+# CREATE A POSTGRESQL DATABASE
+#=================================================
+ynh_script_progression "Creating a PostgreSQL database..."
+
+ynh_psql_db_shell <<< "CREATE DATABASE $db_name ENCODING 'UTF8' LC_COLLATE='C' LC_CTYPE='C' template=template0 OWNER $app;"
+
+#=================================================
 # DOWNLOAD, CHECK AND UNPACK SOURCE
 #=================================================
-ynh_script_progression --message="Setting up source files..." --weight=2
+ynh_script_progression "Setting up source files..."
 
-# Download, check integrity, uncompress and patch the source from app.src
 ynh_setup_source --dest_dir="$install_dir/build"
-
-chmod -R o-rwx "$install_dir"
-chown -R $app:root "$install_dir"
 
 #=================================================
 # NGINX CONFIGURATION
 #=================================================
-ynh_script_progression --message="Configuring NGINX web server..." --weight=1
+ynh_script_progression "Configuring NGINX web server..."
 
-# Create a dedicated NGINX config
-ynh_add_nginx_config
+ynh_config_add_nginx
 
 # Create .well-known redirection for access by federation
 if yunohost --output-as plain domain list | grep -q "^$server_name$"
 then
-    ynh_add_config --template="server_name.conf" --destination="/etc/nginx/conf.d/${server_name}.d/${app}_server_name.conf"
+    ynh_config_add --template="server_name.conf" --destination="/etc/nginx/conf.d/${server_name}.d/${app}_server_name.conf"
 fi
 
 #=================================================
-# SPECIFIC SETUP
-#=================================================
 # BUILDING SOURCES AND SETTING UP THE SERVER
 #=================================================
-ynh_script_progression --message="Building the sources (it will take some time)..." --weight=6
+ynh_script_progression "Building the sources (it will take some time)..."
 
-ynh_exec_warn_less ynh_install_go --go_version=$GO_VERSION
+ynh_go_install
 
 pushd "$install_dir/build"
 	# Build the sources
-	ynh_use_go
 	export GOPATH="$install_dir/build/go"
 	export GOCACHE="$install_dir/build/.cache"
-	CGO_ENABLED=1 go build -trimpath -v -o "$install_dir/bin/" ./cmd/dendrite > /dev/null 2>&1
-	CGO_ENABLED=1 go build -trimpath -v -o "$install_dir/bin/" ./cmd/create-account > /dev/null 2>&1
-	CGO_ENABLED=1 go build -trimpath -v -o "$install_dir/bin/" ./cmd/generate-keys > /dev/null 2>&1
+	ynh_hide_warnings ynh_exec_as_app CGO_ENABLED=1 go build -trimpath -v -o "$install_dir/bin/" ./cmd/dendrite > /dev/null 2>&1
+	ynh_hide_warnings ynh_exec_as_app CGO_ENABLED=1 go build -trimpath -v -o "$install_dir/bin/" ./cmd/create-account > /dev/null 2>&1
+	ynh_hide_warnings ynh_exec_as_app CGO_ENABLED=1 go build -trimpath -v -o "$install_dir/bin/" ./cmd/generate-keys > /dev/null 2>&1
 popd
 
-ynh_secure_remove --file="$install_dir/build"
-ynh_remove_go
+ynh_safe_rm "$install_dir/build"
+ynh_go_remove
 
-ynh_script_progression --message="Generating the keys..." --weight=1
+ynh_script_progression "Generating the keys..."
 
 pushd "$install_dir"
 	# Generate a Matrix signing key for federation
@@ -94,73 +87,60 @@ pushd "$install_dir"
 	./bin/generate-keys --tls-cert server.crt --tls-key server.key
 popd
 
-# Set permissions to app files
 chown -R $app:root "$install_dir"
 
 #=================================================
 ## SET STANDARD SETTINGS FROM DEFAULT CONFIG
 #=================================================
+
 guests_disabled="true"
 registration_shared_secret=""
 enable_registration_captcha="false"
-ynh_app_setting_set --app=$app --key=registration_disabled --value=$registration_disabled
-ynh_app_setting_set --app=$app --key=disable_federation --value=$disable_federation
-ynh_app_setting_set --app=$app --key=guests_disabled --value=$guests_disabled
-ynh_app_setting_set --app=$app --key=registration_shared_secret --value=$registration_shared_secret
-ynh_app_setting_set --app=$app --key=enable_registration_captcha --value=$enable_registration_captcha
+ynh_app_setting_set --key=registration_disabled --value=$registration_disabled
+ynh_app_setting_set --key=disable_federation --value=$disable_federation
+ynh_app_setting_set --key=guests_disabled --value=$guests_disabled
+ynh_app_setting_set --key=registration_shared_secret --value=$registration_shared_secret
+ynh_app_setting_set --key=enable_registration_captcha --value=$enable_registration_captcha
 
 #=================================================
 # ADD A CONFIGURATION
 #=================================================
-ynh_script_progression --message="Adding a configuration file..."
+ynh_script_progression "Adding $app's configuration..."
 
-# Copy and modify the config file
-ynh_add_config --template="dendrite.yaml" --destination="$install_dir/dendrite.yaml"
-
-chmod 400 "$install_dir/dendrite.yaml"
-chown $app:$app "$install_dir/dendrite.yaml"
+ynh_config_add --template="dendrite.yaml" --destination="$install_dir/dendrite.yaml"
 
 #=================================================
 # SETUP SYSTEMD
 #=================================================
-ynh_script_progression --message="Configuring a systemd service..." --weight=1
+ynh_script_progression "Configuring $app's systemd service..."
 
-# Create a dedicated systemd config
-ynh_add_systemd_config
+ynh_config_add_systemd
 
-#=================================================
-# GENERIC FINALIZATION
+yunohost service add $app --description="Dendrite Matrix homeserver" --log="/var/log/$app/$app.log" --needs_exposed_ports "$port_tls"
+
 #=================================================
 # SETUP LOGROTATE
 #=================================================
-ynh_script_progression --message="Configuring log rotation..." --weight=1
+ynh_script_progression "Configuring log rotation..."
 
 mkdir -p /var/log/$app
 chown -R $app:root /var/log/$app
 
 # Use logrotate to manage application logfile(s)
-ynh_use_logrotate
+ynh_config_add_logrotate
 # HACKY: Match the weirdly renamed rotated logs.
 # Looking at you, matrix-org/dugong library
-ynh_replace_string --match_string="/var/log/$app/*.log" --replace_string="/var/log/$app/*.log.????-??-??" --target_file="/etc/logrotate.d/$app"
-
-#=================================================
-# INTEGRATE SERVICE IN YUNOHOST
-#=================================================
-ynh_script_progression --message="Integrating service in YunoHost..." --weight=1
-
-yunohost service add $app --description="Dendrite Matrix homeserver" --log="/var/log/$app/$app.log" --needs_exposed_ports "$port_tls"
+ynh_replace --match="/var/log/$app/*.log" --replace="/var/log/$app/*.log.????-??-??" --file="/etc/logrotate.d/$app"
 
 #=================================================
 # START SYSTEMD SERVICE
 #=================================================
-ynh_script_progression --message="Starting a systemd service..." --weight=1
+ynh_script_progression "Starting $app's systemd service..."
 
-# Start a systemd service
-ynh_systemd_action --service_name=$app --action="start" --line_match="Starting external listener" --log_path="systemd"
+ynh_systemctl --service=$app --action="start" --wait_until="Starting external listener" --log_path="systemd"
 
 #=================================================
 # END OF SCRIPT
 #=================================================
 
-ynh_script_progression --message="Installation of $app completed" --last
+ynh_script_progression "Installation of $app completed"
