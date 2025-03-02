@@ -70,9 +70,9 @@ pushd "$install_dir/build"
 	# Build the sources
 	export GOPATH="$install_dir/build/go"
 	export GOCACHE="$install_dir/build/.cache"
-	ynh_hide_warnings ynh_exec_as_app CGO_ENABLED=1 go build -trimpath -v -o "$install_dir/bin/" ./cmd/dendrite > /dev/null 2>&1
-	ynh_hide_warnings ynh_exec_as_app CGO_ENABLED=1 go build -trimpath -v -o "$install_dir/bin/" ./cmd/create-account > /dev/null 2>&1
-	ynh_hide_warnings ynh_exec_as_app CGO_ENABLED=1 go build -trimpath -v -o "$install_dir/bin/" ./cmd/generate-keys > /dev/null 2>&1
+	ynh_hide_warnings ynh_exec_as_app CGO_ENABLED=1 go build -trimpath -v -o "$install_dir/bin/" ./cmd/dendrite
+	ynh_hide_warnings ynh_exec_as_app CGO_ENABLED=1 go build -trimpath -v -o "$install_dir/bin/" ./cmd/create-account
+	ynh_hide_warnings ynh_exec_as_app CGO_ENABLED=1 go build -trimpath -v -o "$install_dir/bin/" ./cmd/generate-keys
 popd
 
 ynh_safe_rm "$install_dir/build"
