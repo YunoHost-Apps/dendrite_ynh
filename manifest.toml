@@ -5,7 +5,7 @@ name = "Dendrite"
 description.en = "Matrix homeserver of second generation"
 description.fr = "Serveur Matrix de seconde génération"
 
-version = "0.14.1~ynh1"
+version = "0.14.1~ynh2"
 
 maintainers = ["tituspijean"]
 
