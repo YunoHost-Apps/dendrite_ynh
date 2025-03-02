@@ -19,7 +19,6 @@ else
 	disable_federation="false"
 fi
 
-
 guests_disabled="true"
 registration_shared_secret=""
 enable_registration_captcha="false"
@@ -40,9 +39,9 @@ usermod -a -G ssl-cert $app
 #=================================================
 # CREATE A POSTGRESQL DATABASE
 #=================================================
-ynh_script_progression "Creating a PostgreSQL database..."
+#ynh_script_progression "Creating a PostgreSQL database..."
 
-ynh_psql_db_shell <<< "CREATE DATABASE $db_name ENCODING 'UTF8' LC_COLLATE='C' LC_CTYPE='C' template=template0 OWNER $app;"
+#ynh_psql_db_shell <<< "CREATE DATABASE $db_name ENCODING 'UTF8' LC_COLLATE='C' LC_CTYPE='C' template=template0 OWNER $app;"
 
 #=================================================
 # DOWNLOAD, CHECK AND UNPACK SOURCE
