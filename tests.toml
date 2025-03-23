@@ -1,6 +1,12 @@
+#:schema https://raw.githubusercontent.com/YunoHost/apps/master/schemas/tests.v1.schema.json
+
 test_format = 1.0
 
 [default]
+
+    # ------------
+    # Tests to run
+    # ------------
 
     exclude = ["install.private"]
 
@@ -10,19 +16,17 @@ test_format = 1.0
 
     args.server_name = "domain.tld"
 
-    # ------------
-    # Tests to run
-    # ------------
-
     # -------------------------------
     # Commits to test upgrade from
     # -------------------------------
 
-    test_upgrade_from.fc2cbb12.name = "Upgrade from 0.12.0"
-    test_upgrade_from.fc2cbb12.args.domain = "domain.tld"
-    test_upgrade_from.fc2cbb12.args.server_name = "domain.tld"
-    test_upgrade_from.fc2cbb12.args.registration = true
+    test_upgrade_from.5baaf36065088072296b9bd171e1390ae2a6ca7f.name = "Upgrade from 0.14.1~ynh2"
 
-[open_registration]
-    only = ["install.root"]
-    args.registration = true
+    #test_upgrade_from.fc2cbb12.name = "Upgrade from 0.12.0"
+    #test_upgrade_from.fc2cbb12.args.domain = "domain.tld"
+    #test_upgrade_from.fc2cbb12.args.server_name = "domain.tld"
+    #test_upgrade_from.fc2cbb12.args.registration = true
+
+    [open_registration]
+        only = ["install.root"]
+        args.registration = true
