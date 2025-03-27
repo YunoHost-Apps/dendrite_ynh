@@ -1,3 +1,5 @@
+#:schema https://raw.githubusercontent.com/YunoHost/apps/master/schemas/manifest.v2.schema.json
+
 packaging_format = 2
 
 id = "dendrite"
@@ -5,7 +7,7 @@ name = "Dendrite"
 description.en = "Matrix homeserver of second generation"
 description.fr = "Serveur Matrix de seconde génération"
 
-version = "0.14.1~ynh1"
+version = "0.14.1~ynh3"
 
 maintainers = ["tituspijean"]
 
@@ -60,11 +62,6 @@ ram.runtime = "50M"
     sha256 = "400aca67b3ed558c8e9d1fb40588589d39e8f67102c6233a5c4d3675ed2a71ea"
     autoupdate.strategy = "latest_github_tag"
 
-    [resources.ports]
-    main.default = 8008
-    tls.default = 8448
-    tls.exposed = "TCP"
-
     [resources.system_user]
 
     [resources.install_dir]
@@ -87,6 +84,11 @@ ram.runtime = "50M"
     server_client_infos.allowed = "visitors"
     server_client_infos.auth_header = false
     server_client_infos.protected = true
+
+    [resources.ports]
+    main.default = 8008
+    tls.default = 8448
+    tls.exposed = "TCP"
 
     [resources.apt]
     packages = "postgresql"

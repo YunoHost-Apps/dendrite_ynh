@@ -18,7 +18,7 @@ services = ["__APP__"]
 ###### How to register an account ?
  * Provide a Registration Shared Secret
  * To register an **admin** account for the user `USERNAME`, connect to your server with ssh and type:
-   `/opt/yunohost/dendrite/bin/create-account -config /opt/yunohost/dendrite/dendrite.yaml -username USERNAME -admin`
+   `yunohost app shell dendrite` (replace `dendrite` with the actual app ID) then `bin/create-account -config dendrite.yaml -username USERNAME -admin`
  * Remove `-admin` to register a default user account.
         """
         type = "markdown"
