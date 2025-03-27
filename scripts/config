@@ -1,23 +1,15 @@
 #!/bin/bash
 
-#=================================================
-# GENERIC STARTING
-#=================================================
-# IMPORT GENERIC HELPERS
-#=================================================
-
 source _common.sh
 source /usr/share/yunohost/helpers
 
-# Stop script if errors
-ynh_abort_if_errors
-
 get_registration_disabled() {
-    registration_disabled=$(ynh_app_setting_get --app $app --key registration_disabled)
+    registration_disabled=$(ynh_app_setting_get --key registration_disabled)
     echo "${registration_disabled}"
 }
 
-set__registration_disabled() { 
+set__registration_disabled() {
+
     if [ "$registration_disabled" -eq "1" ]
     then
         really_enable_open_registration=""
@@ -25,17 +17,16 @@ set__registration_disabled() {
         really_enable_open_registration="--really-enable-open-registration"
     fi
 
-    ynh_write_var_in_file --file=$install_dir/dendrite.yaml --key=registration_disabled --value="${registration_disabled}" 
-    domain=$(ynh_app_setting_get --app $app --key domain)
-    port_tls=$(ynh_app_setting_get --app $app --key port_tls)
-    port=$(ynh_app_setting_get --app $app --key port)
-    psql_version=$(ynh_app_setting_get --app $app --key psql_version)
-    ynh_add_systemd_config
-    ynh_systemd_action --service_name=$app --action="restart" --line_match="Starting external listener" --log_path="systemd"
-    ynh_app_setting_set --app=$app --key=registration_disabled --value=$registration_disabled
+    ynh_write_var_in_file --file=$install_dir/dendrite.yaml --key=registration_disabled --value="${registration_disabled}"
+
+    domain=$(ynh_app_setting_get --key domain)
+    port_tls=$(ynh_app_setting_get --key port_tls)
+    port=$(ynh_app_setting_get --key port)
+    psql_version=$(ynh_app_setting_get --key psql_version)
+    ynh_config_add_systemd
+    ynh_systemctl --service=$app --action="restart" --wait_until="Starting external listener" --log_path="systemd"
+    ynh_app_setting_set --key=registration_disabled --value=$registration_disabled
 }
-#=================================================
-# GENERIC FINALIZATION
 #=================================================
 
 ynh_app_config_run $1
