@@ -30,6 +30,10 @@ disk = "50M"
 ram.build = "50M"
 ram.runtime = "50M"
 
+[antifeatures]
+deprecated-software.en = "Dendrite is in maintenance mode: only security fixes will be made to it. It will notably not get support for Sliding Sync and OIDC, breaking its use with the Element X client."
+deprecated-software.fr = "Dendrite est en mode maintenance : seuls des correctifs de sécurité seront déployés. En particulier, elle ne recevra pas le support pour le Sliding Sync et l'OIDC, empêchant son fonctionnement correct avec le client Element X."
+
 [install]
 
     [install.domain]
