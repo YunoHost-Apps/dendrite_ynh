@@ -7,7 +7,7 @@ name = "Dendrite"
 description.en = "Matrix homeserver of second generation"
 description.fr = "Serveur Matrix de seconde génération"
 
-version = "0.14.1~ynh3"
+version = "0.15.0~ynh1"
 
 maintainers = ["tituspijean"]
 
@@ -18,17 +18,21 @@ admindoc = "https://github.com/element-hq/dendrite/tree/master/docs"
 code = "https://github.com/element-hq/dendrite"
 
 [integration]
-yunohost = ">= 12.0.0"
+yunohost = ">= 12.0.9"
+helpers_version = "2.1"
 architectures = "all"
 multi_instance = false
 
 ldap = "not_relevant"
-
 sso = "not_relevant"
 
 disk = "50M"
 ram.build = "50M"
 ram.runtime = "50M"
+
+[antifeatures]
+deprecated-software.en = "Dendrite is in maintenance mode: only security fixes will be made to it. It will notably not get support for Sliding Sync and OIDC, breaking its use with the Element X client."
+deprecated-software.fr = "Dendrite est en mode maintenance : seuls des correctifs de sécurité seront déployés. En particulier, elle ne recevra pas le support pour le Sliding Sync et l'OIDC, empêchant son fonctionnement correct avec le client Element X."
 
 [install]
 
@@ -58,8 +62,8 @@ ram.runtime = "50M"
 
 [resources]
     [resources.sources.main]
-    url = "https://github.com/element-hq/dendrite/archive/refs/tags/v0.14.1.tar.gz"
-    sha256 = "400aca67b3ed558c8e9d1fb40588589d39e8f67102c6233a5c4d3675ed2a71ea"
+    url = "https://github.com/element-hq/dendrite/archive/refs/tags/v0.15.0.tar.gz"
+    sha256 = "8cd86b85dcc0ab589c8bfe5ae761e055ceaf6dd3a59b085efe071bd3086956e4"
     autoupdate.strategy = "latest_github_tag"
 
     [resources.system_user]
