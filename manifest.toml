@@ -7,7 +7,7 @@ name = "Dendrite"
 description.en = "Matrix homeserver of second generation"
 description.fr = "Serveur Matrix de seconde génération"
 
-version = "0.14.1~ynh3"
+version = "0.15.0~ynh1"
 
 maintainers = ["tituspijean"]
 
@@ -62,8 +62,8 @@ deprecated-software.fr = "Dendrite est en mode maintenance : seuls des correctif
 
 [resources]
     [resources.sources.main]
-    url = "https://github.com/element-hq/dendrite/archive/refs/tags/v0.14.1.tar.gz"
-    sha256 = "400aca67b3ed558c8e9d1fb40588589d39e8f67102c6233a5c4d3675ed2a71ea"
+    url = "https://github.com/element-hq/dendrite/archive/refs/tags/v0.15.0.tar.gz"
+    sha256 = "8cd86b85dcc0ab589c8bfe5ae761e055ceaf6dd3a59b085efe071bd3086956e4"
     autoupdate.strategy = "latest_github_tag"
 
     [resources.system_user]
