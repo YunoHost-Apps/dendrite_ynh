@@ -68,7 +68,7 @@ fi
 #=================================================
 ynh_script_progression "Building the sources (it will take some time)..."
 
-ynh_go_install
+#REMOVEME? ynh_go_install
 
 pushd "$install_dir/build"
 	# Build the sources
@@ -80,7 +80,7 @@ pushd "$install_dir/build"
 popd
 
 ynh_safe_rm "$install_dir/build"
-ynh_go_remove
+#REMOVEME? ynh_go_remove
 
 ynh_script_progression "Generating the keys..."
 
