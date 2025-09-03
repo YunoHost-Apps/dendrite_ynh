@@ -18,7 +18,7 @@ admindoc = "https://github.com/element-hq/dendrite/tree/master/docs"
 code = "https://github.com/element-hq/dendrite"
 
 [integration]
-yunohost = ">= 12.0.9"
+yunohost = ">= 12.1.17"
 helpers_version = "2.1"
 architectures = "all"
 multi_instance = false
@@ -99,3 +99,6 @@ deprecated-software.fr = "Dendrite est en mode maintenance : seuls des correctif
 
     [resources.database]
     type = "postgresql"
+
+    [resources.go]
+    version = "1.22"
