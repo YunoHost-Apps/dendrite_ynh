@@ -87,8 +87,6 @@ ynh_setup_source --dest_dir="$install_dir/build" --keep="dendrite.yaml" --full_r
 #=================================================
 ynh_script_progression "Building the sources (it will take some time)..."
 
-#REMOVEME? ynh_go_install
-
 pushd "$install_dir/build"
 	# Build the sources
 	export PATH="$PATH"
@@ -101,7 +99,6 @@ pushd "$install_dir/build"
 popd
 
 ynh_safe_rm "$install_dir/build"
-#REMOVEME? ynh_go_remove
 
 chown -R $app:root "$install_dir"
 
